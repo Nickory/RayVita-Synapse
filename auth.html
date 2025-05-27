@@ -3,72 +3,263 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>RayVita Synapse - 登录注册</title>
+    <meta name="description" content="RayVita智能健康管理平台 - 安全登录注册">
+    <meta name="keywords" content="健康管理,智能医疗,登录注册,RayVita">
+    <title>RayVita - 智能健康管理平台</title>
+
+    <!-- 预加载关键资源 -->
+    <link rel="preload" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" as="style">
+    <link rel="preload" href="assets/css/common.css" as="style">
+    <link rel="preload" href="assets/css/auth.css" as="style">
+
+    <!-- 图标 -->
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%23667eea'%3e%3cpath d='M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z'/%3e%3c/svg%3e">
+
+    <!-- 外部样式表 -->
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+
+    <!-- 自定义样式表 -->
     <link rel="stylesheet" href="assets/css/common.css">
     <link rel="stylesheet" href="assets/css/auth.css">
+
+    <!-- 主题色 -->
+    <meta name="theme-color" content="#667eea">
+    <meta name="msapplication-TileColor" content="#667eea">
 </head>
 <body>
-    <!-- 动画背景 -->
+    <!-- 背景动画 -->
     <div class="animated-bg"></div>
+
+    <!-- 粒子效果容器 -->
     <div class="particles" id="particles"></div>
 
-    <!-- 登录注册界面 -->
-    <div id="authContainer" class="auth-container">
-        <div class="auth-box">
-            <div class="auth-header">
-                <div class="logo">
-                    <i class="fas fa-heart-pulse"></i>
+    <!-- 主容器 -->
+    <div class="main-container">
+        <!-- 左侧插图区域 -->
+        <div class="illustration-section">
+            <div class="illustration-content">
+                <div class="hero-illustration">
+                    <!-- 手机模型 -->
+                    <div class="phone-mockup">
+                        <div class="phone-screen">
+                            <!-- App头部 -->
+                            <div class="app-header">
+                                <div class="app-icon">
+                                    <i class="fas fa-heart-pulse"></i>
+                                </div>
+                                <span>RayVita</span>
+                            </div>
+
+                            <!-- 健康图表 -->
+                            <div class="health-chart">
+                                <div class="chart-line"></div>
+                                <div class="chart-dots">
+                                    <div class="dot active"></div>
+                                    <div class="dot"></div>
+                                    <div class="dot"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 安全元素 -->
+                    <div class="security-elements">
+                        <div class="shield-icon">
+                            <i class="fas fa-shield-alt"></i>
+                        </div>
+                        <div class="key-icon">
+                            <i class="fas fa-key"></i>
+                        </div>
+                        <div class="lock-icon">
+                            <i class="fas fa-lock"></i>
+                        </div>
+                    </div>
+
+                    <!-- 浮动人物 -->
+                    <div class="floating-person">
+                        <div class="person-icon">
+                            <i class="fas fa-user-doctor"></i>
+                        </div>
+                    </div>
                 </div>
-                <h1>RayVita</h1>
-                <p id="authSubtitle">智能健康管理平台，开启健康新生活</p>
+
+                <!-- 插图文本 -->
+                <div class="illustration-text">
+                    <h2>安全可靠的健康管理</h2>
+                    <p>您的健康数据采用银行级加密保护，让您安心享受智能健康服务</p>
+                </div>
             </div>
+        </div>
 
-            <div id="authForm">
-                <div class="form-group">
-                    <label><i class="fas fa-envelope"></i> 邮箱地址</label>
-                    <input type="email" id="email" placeholder="请输入您的邮箱地址" required>
+        <!-- 右侧表单区域 -->
+        <div class="form-section">
+            <div class="form-container">
+                <!-- 表单头部 -->
+                <div class="form-header">
+                    <h1>Welcome!</h1>
+                    <p id="authSubtitle">Sign in to your Account</p>
                 </div>
 
-                <div class="form-group" id="nicknameGroup" style="display: none;">
-                    <label><i class="fas fa-user-circle"></i> 用户昵称</label>
-                    <input type="text" id="nickname" placeholder="请输入您的昵称">
-                </div>
+                <!-- 认证表单 -->
+                <form id="authForm" class="auth-form" novalidate>
+                    <!-- 邮箱输入 -->
+                    <div class="input-group">
+                        <div class="input-wrapper">
+                            <i class="fas fa-envelope input-icon"></i>
+                            <input
+                                type="email"
+                                id="email"
+                                name="email"
+                                placeholder="Email Address"
+                                required
+                                autocomplete="email"
+                                spellcheck="false"
+                            >
+                        </div>
+                    </div>
 
-                <div class="form-group">
-                    <label><i class="fas fa-lock"></i> 登录密码</label>
-                    <div class="password-toggle">
-                        <input type="password" id="password" placeholder="请输入您的密码" required>
-                        <button type="button" class="toggle-btn" onclick="togglePassword('password')">
-                            <i class="fas fa-eye"></i>
+                    <!-- 昵称输入（注册时显示） -->
+                    <div class="input-group" id="nicknameGroup" style="display: none;">
+                        <div class="input-wrapper">
+                            <i class="fas fa-user input-icon"></i>
+                            <input
+                                type="text"
+                                id="nickname"
+                                name="nickname"
+                                placeholder="Nickname"
+                                autocomplete="nickname"
+                                spellcheck="false"
+                            >
+                        </div>
+                    </div>
+
+                    <!-- 密码输入 -->
+                    <div class="input-group">
+                        <div class="input-wrapper password-wrapper">
+                            <i class="fas fa-lock input-icon"></i>
+                            <input
+                                type="password"
+                                id="password"
+                                name="password"
+                                placeholder="Password"
+                                required
+                                autocomplete="current-password"
+                            >
+                            <button
+                                type="button"
+                                class="password-toggle"
+                                onclick="togglePassword('password')"
+                                aria-label="切换密码显示"
+                            >
+                                <i class="fas fa-eye"></i>
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- 确认密码输入（注册时显示） -->
+                    <div class="input-group" id="confirmPasswordGroup" style="display: none;">
+                        <div class="input-wrapper password-wrapper">
+                            <i class="fas fa-shield-alt input-icon"></i>
+                            <input
+                                type="password"
+                                id="confirmPassword"
+                                name="confirmPassword"
+                                placeholder="Confirm Password"
+                                autocomplete="new-password"
+                            >
+                            <button
+                                type="button"
+                                class="password-toggle"
+                                onclick="togglePassword('confirmPassword')"
+                                aria-label="切换确认密码显示"
+                            >
+                                <i class="fas fa-eye"></i>
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- 忘记密码链接 -->
+                    <div class="forgot-password">
+                        <a href="#" onclick="showToast('找回密码功能开发中', 'info'); return false;">
+                            Forgot Password?
+                        </a>
+                    </div>
+
+                    <!-- 主要认证按钮 -->
+                    <button
+                        type="submit"
+                        class="auth-btn"
+                        id="authBtn"
+                    >
+                        <span class="btn-text">SIGN IN</span>
+                        <i class="fas fa-sign-in-alt btn-icon"></i>
+                    </button>
+
+                    <!-- 分割线 -->
+                    <div class="divider">
+                        <span>OR LOGIN WITH</span>
+                    </div>
+
+                    <!-- 社交登录按钮 -->
+                    <div class="social-login">
+                        <button
+                            type="button"
+                            class="social-btn facebook"
+                            onclick="showToast('Facebook登录功能开发中', 'info')"
+                            aria-label="使用Facebook登录"
+                        >
+                            <i class="fab fa-facebook-f"></i>
+                        </button>
+                        <button
+                            type="button"
+                            class="social-btn google"
+                            onclick="showToast('Google登录功能开发中', 'info')"
+                            aria-label="使用Google登录"
+                        >
+                            <i class="fab fa-google"></i>
+                        </button>
+                        <button
+                            type="button"
+                            class="social-btn linkedin"
+                            onclick="showToast('LinkedIn登录功能开发中', 'info')"
+                            aria-label="使用LinkedIn登录"
+                        >
+                            <i class="fab fa-linkedin-in"></i>
                         </button>
                     </div>
-                </div>
 
-                <div class="form-group" id="confirmPasswordGroup" style="display: none;">
-                    <label><i class="fas fa-shield-alt"></i> 确认密码</label>
-                    <div class="password-toggle">
-                        <input type="password" id="confirmPassword" placeholder="请再次输入密码确认">
-                        <button type="button" class="toggle-btn" onclick="togglePassword('confirmPassword')">
-                            <i class="fas fa-eye"></i>
-                        </button>
+                    <!-- 切换认证模式 -->
+                    <div class="switch-auth" id="switchAuth" onclick="switchAuthMode()">
+                        <span>Don't have an account? <strong>Sign Up</strong></span>
                     </div>
-                </div>
-
-                <button class="btn" id="authBtn" onclick="handleAuth()">
-                    <i class="fas fa-sign-in-alt"></i> 立即登录
-                </button>
-
-                <div class="switch-auth" id="switchAuth" onclick="switchAuthMode()">
-                    <i class="fas fa-user-plus"></i> 还没有账户？立即注册
-                </div>
+                </form>
             </div>
         </div>
     </div>
 
-    <!-- 提示消息 -->
-    <div id="toast" class="toast"></div>
+    <!-- 提示消息容器 -->
+    <div id="toast" class="toast" role="alert" aria-live="polite"></div>
 
+    <!-- 脚本文件 -->
     <script src="assets/js/auth.js"></script>
+
+    <!-- 结构化数据 -->
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "WebApplication",
+        "name": "RayVita智能健康管理平台",
+        "description": "安全可靠的智能健康管理平台，提供个性化健康服务",
+        "url": "https://rayvita.com",
+        "applicationCategory": "HealthApplication",
+        "operatingSystem": "Any",
+        "permissions": "https://rayvita.com/privacy",
+        "offers": {
+            "@type": "Offer",
+            "price": "0",
+            "priceCurrency": "CNY"
+        }
+    }
+    </script>
 </body>
 </html>
