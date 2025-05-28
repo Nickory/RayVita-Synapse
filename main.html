@@ -7,305 +7,475 @@
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
     <link rel="stylesheet" href="assets/css/common.css">
     <link rel="stylesheet" href="assets/css/main.css">
+    <link rel="stylesheet" href="assets/css/health.css">
+
 </head>
 <body>
-    <!-- 主界面 -->
-    <div id="mainContainer" class="main-container">
-        <!-- 导航栏 -->
-        <nav class="navbar">
-            <div class="logo">
-                <i class="fas fa-heart-pulse"></i>
-                <span>RayVita</span>
-                <span class="ai-indicator pulse">
+<!-- 主界面 -->
+<div id="mainContainer" class="main-container">
+    <!-- 导航栏 -->
+    <nav class="navbar">
+        <div class="logo">
+            <i class="fas fa-heart-pulse"></i>
+            <span>RayVita</span>
+            <span class="ai-indicator pulse">
                     <i class="fas fa-brain"></i> AI智能
                 </span>
+        </div>
+        <div class="user-info">
+            <div class="user-avatar" id="userAvatar">R</div>
+            <span class="user-name" id="userName">智能用户</span>
+            <button class="logout-btn" onclick="logout()">
+                <i class="fas fa-sign-out-alt"></i> 安全退出
+            </button>
+        </div>
+    </nav>
+
+    <!-- 主布局 -->
+    <div class="app-layout">
+        <!-- 侧边栏 -->
+        <div class="sidebar">
+            <div class="sidebar-item active" onclick="showPage('dashboard')">
+                <i class="fas fa-chart-line"></i>
+                <span>智能仪表板</span>
             </div>
-            <div class="user-info">
-                <div class="user-avatar" id="userAvatar">R</div>
-                <span class="user-name" id="userName">智能用户</span>
-                <button class="logout-btn" onclick="logout()">
-                    <i class="fas fa-sign-out-alt"></i> 安全退出
-                </button>
+            <div class="sidebar-item" onclick="showPage('health')">
+                <i class="fas fa-heartbeat"></i>
+                <span>健康数据中心</span>
             </div>
-        </nav>
-
-        <!-- 主布局 -->
-        <div class="app-layout">
-            <!-- 侧边栏 -->
-            <div class="sidebar">
-                <div class="sidebar-item active" onclick="showPage('dashboard')">
-                    <i class="fas fa-chart-line"></i>
-                    <span>智能仪表板</span>
-                </div>
-                <div class="sidebar-item" onclick="showPage('health')">
-                    <i class="fas fa-heartbeat"></i>
-                    <span>健康数据中心</span>
-                </div>
-                <div class="sidebar-item" onclick="showPage('ai-analysis')">
-                    <i class="fas fa-brain"></i>
-                    <span>AI健康分析</span>
-                </div>
-                <div class="sidebar-item" onclick="showPage('social')">
-                    <i class="fas fa-users-medical"></i>
-                    <span>健康社区</span>
-                </div>
-                <div class="sidebar-item" onclick="showPage('challenges')">
-                    <i class="fas fa-trophy"></i>
-                    <span>智能挑战</span>
-                </div>
-                <div class="sidebar-item" onclick="showPage('friends')">
-                    <i class="fas fa-user-friends"></i>
-                    <span>健康伙伴</span>
-                </div>
-                <div class="sidebar-item" onclick="showPage('notifications')">
-                    <i class="fas fa-bell"></i>
-                    <span>消息中心</span>
-                </div>
+            <div class="sidebar-item" onclick="showPage('ai-analysis')">
+                <i class="fas fa-brain"></i>
+                <span>AI健康分析</span>
             </div>
+            <div class="sidebar-item" onclick="showPage('social')">
+                <i class="fas fa-users-medical"></i>
+                <span>健康社区</span>
+            </div>
+            <div class="sidebar-item" onclick="showPage('challenges')">
+                <i class="fas fa-trophy"></i>
+                <span>智能挑战</span>
+            </div>
+            <div class="sidebar-item" onclick="showPage('friends')">
+                <i class="fas fa-user-friends"></i>
+                <span>健康伙伴</span>
+            </div>
+            <div class="sidebar-item" onclick="showPage('notifications')">
+                <i class="fas fa-bell"></i>
+                <span>消息中心</span>
+            </div>
+        </div>
 
-            <!-- 内容区域 -->
-            <div class="content">
-                <!-- 智能仪表板页面 -->
-                <div id="dashboard" class="page active">
-                    <div class="page-header">
-                        <div>
-                            <h1 class="page-title">智能健康仪表板</h1>
-                            <p class="page-subtitle">AI驱动的个性化健康洞察，实时监控您的身体状态</p>
-                        </div>
-                        <div class="ai-indicator pulse">
-                            <i class="fas fa-robot"></i> AI实时分析中
-                        </div>
+        <!-- 内容区域 -->
+        <div class="content">
+            <!-- 智能仪表板页面 -->
+            <div id="dashboard" class="page active">
+                <div class="page-header">
+                    <div>
+                        <h1 class="page-title">智能健康仪表板</h1>
+                        <p class="page-subtitle">AI驱动的个性化健康洞察，实时监控您的身体状态</p>
                     </div>
-
-                    <div class="stat-cards" id="statCards">
-                        <div class="stat-card">
-                            <div class="feature-badge">实时</div>
-                            <div class="stat-icon" style="background: linear-gradient(135deg, #ff6b6b, #ee5a52);">
-                                <i class="fas fa-heartbeat"></i>
-                            </div>
-                            <div class="stat-value" id="avgHeartRate">-- BPM</div>
-                            <div class="stat-label">平均心率</div>
-                        </div>
-                        <div class="stat-card">
-                            <div class="feature-badge">AI分析</div>
-                            <div class="stat-icon" style="background: linear-gradient(135deg, #4ecdc4, #45b7aa);">
-                                <i class="fas fa-wave-square"></i>
-                            </div>
-                            <div class="stat-value" id="avgHRV">-- ms</div>
-                            <div class="stat-label">心率变异性</div>
-                        </div>
-                        <div class="stat-card">
-                            <div class="feature-badge">智能</div>
-                            <div class="stat-icon" style="background: linear-gradient(135deg, #45b7d1, #3498db);">
-                                <i class="fas fa-trophy"></i>
-                            </div>
-                            <div class="stat-value" id="activeChallenges">0</div>
-                            <div class="stat-label">活跃挑战</div>
-                        </div>
-                        <div class="stat-card">
-                            <div class="feature-badge">社交</div>
-                            <div class="stat-icon" style="background: linear-gradient(135deg, #f093fb, #f5576c);">
-                                <i class="fas fa-users"></i>
-                            </div>
-                            <div class="stat-value" id="friendCount">0</div>
-                            <div class="stat-label">健康伙伴</div>
-                        </div>
-                    </div>
-
-                    <!-- AI健康建议卡片 -->
-                    <div class="card">
-                        <div style="display: flex; align-items: center; gap: 15px; margin-bottom: 25px;">
-                            <div class="stat-icon" style="background: linear-gradient(135deg, #667eea, #764ba2); width: 50px; height: 50px;">
-                                <i class="fas fa-brain"></i>
-                            </div>
-                            <div>
-                                <h3 style="color: var(--text-primary); font-size: 20px;">AI智能健康建议</h3>
-                                <p style="color: var(--text-secondary); margin: 0;">基于您的数据分析生成个性化建议</p>
-                            </div>
-                        </div>
-                        <div id="aiSuggestions">
-                            <div class="loading">
-                                <i class="fas fa-brain"></i>
-                                <p>AI正在分析您的健康数据...</p>
-                            </div>
-                        </div>
+                    <div class="ai-indicator pulse">
+                        <i class="fas fa-robot"></i> AI实时分析中
                     </div>
                 </div>
 
-                <!-- 健康数据中心页面 -->
-                <div id="health" class="page">
-                    <div class="page-header">
-                        <div>
-                            <h1 class="page-title">健康数据中心</h1>
-                            <p class="page-subtitle">全方位健康监测，智能数据分析与管理</p>
+                <div class="stat-cards" id="statCards">
+                    <div class="stat-card">
+                        <div class="feature-badge">实时</div>
+                        <div class="stat-icon" style="background: linear-gradient(135deg, #ff6b6b, #ee5a52);">
+                            <i class="fas fa-heartbeat"></i>
                         </div>
-                        <button class="btn-primary" onclick="addHealthData()">
-                            <i class="fas fa-plus-circle"></i> 添加健康数据
-                        </button>
+                        <div class="stat-value" id="avgHeartRate">-- BPM</div>
+                        <div class="stat-label">平均心率</div>
                     </div>
-
-                    <div class="card">
-                        <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 25px;">
-                            <h3 style="color: var(--text-primary); font-size: 22px;">最新健康记录</h3>
-                            <div class="ai-indicator">
-                                <i class="fas fa-chart-line"></i> 智能分析
-                            </div>
+                    <div class="stat-card">
+                        <div class="feature-badge">AI分析</div>
+                        <div class="stat-icon" style="background: linear-gradient(135deg, #4ecdc4, #45b7aa);">
+                            <i class="fas fa-wave-square"></i>
                         </div>
-                        <div class="data-list" id="healthDataList">
-                            <div class="loading">
-                                <i class="fas fa-heartbeat"></i>
-                                <p>正在加载您的健康数据...</p>
-                            </div>
-                        </div>
+                        <div class="stat-value" id="avgHRV">-- ms</div>
+                        <div class="stat-label">心率变异性</div>
                     </div>
-                </div>
-
-                <!-- AI健康分析页面 -->
-                <div id="ai-analysis" class="page">
-                    <div class="page-header">
-                        <div>
-                            <h1 class="page-title">AI健康分析</h1>
-                            <p class="page-subtitle">人工智能深度分析，提供专业健康洞察</p>
-                        </div>
-                        <div class="ai-indicator pulse">
-                            <i class="fas fa-robot"></i> AI引擎运行中
-                        </div>
-                    </div>
-
-                    <div class="stat-cards">
-                        <div class="card">
-                            <div class="feature-badge">NEW</div>
-                            <div style="display: flex; align-items: center; gap: 15px; margin-bottom: 20px;">
-                                <div class="stat-icon" style="background: linear-gradient(135deg, #667eea, #764ba2); width: 50px; height: 50px;">
-                                    <i class="fas fa-brain"></i>
-                                </div>
-                                <h3 style="color: var(--text-primary); font-size: 20px;">智能健康评分</h3>
-                            </div>
-                            <div class="stat-value" style="color: var(--primary-color);">85/100</div>
-                            <p style="color: var(--text-secondary); margin-top: 10px;">您的整体健康状况良好，继续保持！</p>
-                        </div>
-
-                        <div class="card">
-                            <div class="feature-badge">AI</div>
-                            <div style="display: flex; align-items: center; gap: 15px; margin-bottom: 20px;">
-                                <div class="stat-icon" style="background: linear-gradient(135deg, #10b981, #34d399); width: 50px; height: 50px;">
-                                    <i class="fas fa-chart-pie"></i>
-                                </div>
-                                <h3 style="color: var(--text-primary); font-size: 20px;">风险预测</h3>
-                            </div>
-                            <div class="stat-value" style="color: #10b981;">低风险</div>
-                            <p style="color: var(--text-secondary); margin-top: 10px;">基于AI模型分析，您的健康风险较低</p>
-                        </div>
-                    </div>
-
-                    <div class="card">
-                        <h3 style="color: var(--text-primary); font-size: 22px; margin-bottom: 25px;">AI深度分析报告</h3>
-                        <div class="empty-state">
-                            <i class="fas fa-chart-line"></i>
-                            <h3>AI正在生成您的专属健康报告</h3>
-                            <p>我们的人工智能正在分析您的健康数据，为您生成个性化的深度健康报告</p>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- 健康社区页面 -->
-                <div id="social" class="page">
-                    <div class="page-header">
-                        <div>
-                            <h1 class="page-title">健康社区</h1>
-                            <p class="page-subtitle">分享健康生活，与健康伙伴互动交流</p>
-                        </div>
-                        <button class="btn-primary" onclick="createPost()">
-                            <i class="fas fa-pen-fancy"></i> 发表健康动态
-                        </button>
-                    </div>
-
-                    <div id="postsContainer">
-                        <div class="loading">
-                            <i class="fas fa-comments"></i>
-                            <p>正在加载社区动态...</p>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- 智能挑战页面 -->
-                <div id="challenges" class="page">
-                    <div class="page-header">
-                        <div>
-                            <h1 class="page-title">智能挑战系统</h1>
-                            <p class="page-subtitle">AI定制化健康挑战，科学提升身体素质</p>
-                        </div>
-                        <button class="btn-primary" onclick="createChallenge()">
-                            <i class="fas fa-rocket"></i> 创建智能挑战
-                        </button>
-                    </div>
-
-                    <div class="stat-cards" id="challengesContainer">
-                        <div class="loading">
+                    <div class="stat-card">
+                        <div class="feature-badge">智能</div>
+                        <div class="stat-icon" style="background: linear-gradient(135deg, #45b7d1, #3498db);">
                             <i class="fas fa-trophy"></i>
-                            <p>正在加载您的挑战...</p>
                         </div>
+                        <div class="stat-value" id="activeChallenges">0</div>
+                        <div class="stat-label">活跃挑战</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="feature-badge">社交</div>
+                        <div class="stat-icon" style="background: linear-gradient(135deg, #f093fb, #f5576c);">
+                            <i class="fas fa-users"></i>
+                        </div>
+                        <div class="stat-value" id="friendCount">0</div>
+                        <div class="stat-label">健康伙伴</div>
                     </div>
                 </div>
 
-                <!-- 健康伙伴页面 -->
-                <div id="friends" class="page">
-                    <div class="page-header">
-                        <div>
-                            <h1 class="page-title">健康伙伴管理</h1>
-                            <p class="page-subtitle">建立健康社交网络，共同实现健康目标</p>
+                <!-- AI健康建议卡片 -->
+                <div class="card">
+                    <div style="display: flex; align-items: center; gap: 15px; margin-bottom: 25px;">
+                        <div class="stat-icon"
+                             style="background: linear-gradient(135deg, #667eea, #764ba2); width: 50px; height: 50px;">
+                            <i class="fas fa-brain"></i>
                         </div>
-                        <button class="btn-primary" onclick="addFriend()">
-                            <i class="fas fa-user-plus"></i> 添加健康伙伴
-                        </button>
+                        <div>
+                            <h3 style="color: var(--text-primary); font-size: 20px;">AI智能健康建议</h3>
+                            <p style="color: var(--text-secondary); margin: 0;">基于您的数据分析生成个性化建议</p>
+                        </div>
                     </div>
-
-                    <div class="card">
-                        <h3 style="margin-bottom: 25px; color: var(--text-primary); font-size: 22px;">我的健康伙伴</h3>
-                        <div class="stat-cards" id="friendsList">
-                            <div class="loading">
-                                <i class="fas fa-users"></i>
-                                <p>正在加载您的健康伙伴...</p>
-                            </div>
+                    <div id="aiSuggestions">
+                        <div class="loading">
+                            <i class="fas fa-brain"></i>
+                            <p>AI正在分析您的健康数据...</p>
                         </div>
                     </div>
                 </div>
+            </div>
 
-                <!-- 消息中心页面 -->
-                <div id="notifications" class="page">
-                    <div class="page-header">
-                        <div>
-                            <h1 class="page-title">智能消息中心</h1>
-                            <p class="page-subtitle">实时接收健康提醒和系统通知</p>
+            <!-- 健康数据中心页面 -->
+            <div id="health" class="page">
+                <div class="container">
+                    <!-- 头部区域 -->
+                    <!--                    <div class="header">-->
+                    <!--                        <div class="header-title">-->
+                    <!--                            <div class="title-icon">🏥</div>-->
+                    <!--                            <h2>健康历史</h2>-->
+                    <!--                            <div class="pulse-animation"></div>-->
+                    <!--                        </div>-->
+                    <!--                        <div class="header-controls">-->
+                    <!--                            <div class="tab-group">-->
+                    <!--                                <button class="tab-btn active" data-type="all">-->
+                    <!--                                    <span class="tab-icon">📊</span>-->
+                    <!--                                    <span>全部</span>-->
+                    <!--                                </button>-->
+                    <!--                                <button class="tab-btn" data-type="hr">-->
+                    <!--                                    <span class="tab-icon">❤️</span>-->
+                    <!--                                    <span>心率</span>-->
+                    <!--                                </button>-->
+                    <!--                                <button class="tab-btn" data-type="hrv">-->
+                    <!--                                    <span class="tab-icon">📈</span>-->
+                    <!--                                    <span>HRV</span>-->
+                    <!--                                </button>-->
+                    <!--                                <button class="tab-btn" data-type="spo2">-->
+                    <!--                                    <span class="tab-icon">🫁</span>-->
+                    <!--                                    <span>SpO2</span>-->
+                    <!--                                </button>-->
+                    <!--                            </div>-->
+                    <!--                        </div>-->
+                    <!--                    </div>-->
+
+                    <!-- 智能日历选择区域 -->
+                    <div class="smart-calendar-section">
+                        <div class="calendar-header">
+                            <h3 class="calendar-title">
+                                <span class="calendar-icon">📅</span>
+                                数据时间范围
+                            </h3>
+                            <div class="view-toggles">
+                                <button class="view-btn active" data-view="day">日</button>
+                                <button class="view-btn" data-view="week">周</button>
+                                <button class="view-btn" data-view="month">月</button>
+                            </div>
                         </div>
-                        <button class="btn-primary" onclick="markAllRead()">
-                            <i class="fas fa-check-double"></i> 全部标记已读
-                        </button>
+
+                        <div class="smart-calendar">
+                            <div class="calendar-controls">
+                                <button class="calendar-nav prev" id="prevPeriod">❮</button>
+                                <div class="current-period" id="currentPeriod">2024年5月28日</div>
+                                <button class="calendar-nav next" id="nextPeriod">❯</button>
+                            </div>
+
+                            <div class="quick-select">
+                                <button class="quick-btn" data-days="0">今天</button>
+                                <button class="quick-btn" data-days="1">昨天</button>
+                                <button class="quick-btn" data-days="7">最近7天</button>
+                                <button class="quick-btn" data-days="30">最近30天</button>
+                            </div>
+
+                            <input type="date" id="datePicker" class="hidden-date-picker"/>
+                        </div>
+                    </div>
+
+                    <!-- 数据可视化统计面板 -->
+                    <div class="visualization-panel">
+                        <!--                        <div class="stats-overview">-->
+                        <!--                            <div class="stat-card primary">-->
+                        <!--                                <div class="stat-header">-->
+                        <!--                                    <div class="stat-icon">💗</div>-->
+                        <!--                                    <span class="stat-type">心率</span>-->
+                        <!--                                </div>-->
+                        <!--                                <div class="stat-content">-->
+                        <!--                                    <div class="main-value" id="hrAvg">&#45;&#45;</div>-->
+                        <!--                                    <div class="stat-unit">BPM</div>-->
+                        <!--                                    <div class="stat-trend">-->
+                        <!--                                        <span class="trend-label">范围</span>-->
+                        <!--                                        <span class="trend-value" id="hrRange">&#45;&#45;</span>-->
+                        <!--                                    </div>-->
+                        <!--                                </div>-->
+                        <!--                                <div class="stat-chart" id="hrMiniChart"></div>-->
+                        <!--&lt;!&ndash;                            </div>&ndash;&gt;-->
+
+                        <!--&lt;!&ndash;                            <div class="stat-card secondary">&ndash;&gt;-->
+                        <!--                                <div class="stat-header">-->
+                        <!--                                    <div class="stat-icon">🌊</div>-->
+                        <!--                                    <span class="stat-type">HRV</span>-->
+                        <!--                                </div>-->
+                        <!--                                <div class="stat-content">-->
+                        <!--                                    <div class="main-value" id="hrvAvg">&#45;&#45;</div>-->
+                        <!--                                    <div class="stat-unit">ms</div>-->
+                        <!--                                    <div class="stat-trend">-->
+                        <!--                                        <span class="trend-label">变异性</span>-->
+                        <!--                                        <span class="trend-value">良好</span>-->
+                        <!--                                    </div>-->
+                        <!--                                </div>-->
+                        <!--                                <div class="stat-chart" id="hrvMiniChart"></div>-->
+                        <!--&lt;!&ndash;                            </div>&ndash;&gt;-->
+
+                        <!--&lt;!&ndash;                            <div class="stat-card accent">&ndash;&gt;-->
+                        <!--                                <div class="stat-header">-->
+                        <!--                                    <div class="stat-icon">🫁</div>-->
+                        <!--                                    <span class="stat-type">血氧</span>-->
+                        <!--                                </div>-->
+                        <!--                                <div class="stat-content">-->
+                        <!--                                    <div class="main-value" id="spo2Avg">&#45;&#45;</div>-->
+                        <!--                                    <div class="stat-unit">%</div>-->
+                        <!--                                    <div class="stat-trend">-->
+                        <!--                                        <span class="trend-label">饱和度</span>-->
+                        <!--                                        <span class="trend-value">正常</span>-->
+                        <!--                                    </div>-->
+                        <!--                                </div>-->
+                        <!--                                <div class="stat-chart" id="spo2MiniChart"></div>-->
+                        <!--                            </div>-->
+                        <!--                        </div>-->
+
+                        <!--                        &lt;!&ndash; 大图表区域 &ndash;&gt;-->
+                        <!--                        <div class="main-chart-container">-->
+                        <!--                            <div class="chart-header">-->
+                        <!--                                <h3>数据趋势分析</h3>-->
+                        <!--                                <div class="chart-controls">-->
+                        <!--                                    <select class="chart-type-select" id="chartTypeSelect">-->
+                        <!--                                        <option value="line">趋势图</option>-->
+                        <!--                                        <option value="bar">柱状图</option>-->
+                        <!--                                        <option value="area">面积图</option>-->
+                        <!--                                    </select>-->
+                        <!--                                </div>-->
+                        <!--                            </div>-->
+                        <!--                            <div class="main-chart" id="mainChart">-->
+                        <!--                                <canvas id="trendChart" width="800" height="300"></canvas>-->
+                        <!--                            </div>-->
+                        <!--                        </div>-->
+                    </div>
+
+
+                    <!-- 健康记录卡片网格 -->
+                    <div class="records-section">
+                        <div class="section-header">
+                            <h3>详细记录</h3>
+                            <div class="records-count" id="recordsCount">共 0 条记录</div>
+                        </div>
+
+                        <div class="health-records" id="healthRecords">
+                            <div class="loading">
+                                <div class="loading-pulse"></div>
+                                <div class="loading-text">正在加载健康数据...</div>
+                            </div>
+                        </div>
+
+                        <!-- 空状态 -->
+                        <div class="empty-state" id="emptyState" style="display: none;">
+                            <div class="empty-animation">
+                                <div class="empty-icon">📊</div>
+                                <div class="empty-particles"></div>
+                            </div>
+                            <h3>暂无健康记录</h3>
+                            <p>开始记录您的健康数据，建立完整的健康档案</p>
+                            <button class="start-recording-btn">开始记录</button>
+                        </div>
+
+                        <!-- 智能分页 -->
+                        <div class="smart-pagination" id="pagination">
+                            <button id="prevPage" class="page-btn prev">
+                                <span>❮</span>
+                            </button>
+                            <div class="page-indicators" id="pageIndicators"></div>
+                            <button id="nextPage" class="page-btn next">
+                                <span>❯</span>
+                            </button>
+                            <div class="page-info" id="pageInfo">第 1 页</div>
+                        </div>
+
+
+                    </div>
+
+
+                </div>
+
+                <!-- 智能刷新控制 -->
+                <div class="refresh-control">
+                    <div class="auto-refresh-info">
+                        <span class="refresh-icon">🔄</span>
+                        <span>自动更新</span>
+                        <div class="refresh-timer" id="refreshTimer">5:00</div>
+                    </div>
+                    <button class="manual-refresh-btn" id="refreshBtn">
+                        <div class="refresh-ripple"></div>
+                        <span>立即刷新</span>
+                    </button>
+                </div>
+
+            </div>
+            <!-- AI健康分析页面 -->
+            <div id="ai-analysis" class="page">
+                <div class="page-header">
+                    <div>
+                        <h1 class="page-title">AI健康分析</h1>
+                        <p class="page-subtitle">人工智能深度分析，提供专业健康洞察</p>
+                    </div>
+                    <div class="ai-indicator pulse">
+                        <i class="fas fa-robot"></i> AI引擎运行中
+                    </div>
+                </div>
+
+                <div class="stat-cards">
+                    <div class="card">
+                        <div class="feature-badge">NEW</div>
+                        <div style="display: flex; align-items: center; gap: 15px; margin-bottom: 20px;">
+                            <div class="stat-icon"
+                                 style="background: linear-gradient(135deg, #667eea, #764ba2); width: 50px; height: 50px;">
+                                <i class="fas fa-brain"></i>
+                            </div>
+                            <h3 style="color: var(--text-primary); font-size: 20px;">智能健康评分</h3>
+                        </div>
+                        <div class="stat-value" style="color: var(--primary-color);">85/100</div>
+                        <p style="color: var(--text-secondary); margin-top: 10px;">您的整体健康状况良好，继续保持！</p>
                     </div>
 
                     <div class="card">
-                        <div id="notificationsList">
-                            <div class="loading">
-                                <i class="fas fa-bell"></i>
-                                <p>正在加载您的消息...</p>
+                        <div class="feature-badge">AI</div>
+                        <div style="display: flex; align-items: center; gap: 15px; margin-bottom: 20px;">
+                            <div class="stat-icon"
+                                 style="background: linear-gradient(135deg, #10b981, #34d399); width: 50px; height: 50px;">
+                                <i class="fas fa-chart-pie"></i>
                             </div>
+                            <h3 style="color: var(--text-primary); font-size: 20px;">风险预测</h3>
+                        </div>
+                        <div class="stat-value" style="color: #10b981;">低风险</div>
+                        <p style="color: var(--text-secondary); margin-top: 10px;">基于AI模型分析，您的健康风险较低</p>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <h3 style="color: var(--text-primary); font-size: 22px; margin-bottom: 25px;">AI深度分析报告</h3>
+                    <div class="empty-state">
+                        <i class="fas fa-chart-line"></i>
+                        <h3>AI正在生成您的专属健康报告</h3>
+                        <p>我们的人工智能正在分析您的健康数据，为您生成个性化的深度健康报告</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 健康社区页面 -->
+            <div id="social" class="page">
+                <div class="page-header">
+                    <div>
+                        <h1 class="page-title">健康社区</h1>
+                        <p class="page-subtitle">分享健康生活，与健康伙伴互动交流</p>
+                    </div>
+                    <button class="btn-primary" onclick="createPost()">
+                        <i class="fas fa-pen-fancy"></i> 发表健康动态
+                    </button>
+                </div>
+
+                <div id="postsContainer">
+                    <div class="loading">
+                        <i class="fas fa-comments"></i>
+                        <p>正在加载社区动态...</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 智能挑战页面 -->
+            <div id="challenges" class="page">
+                <div class="page-header">
+                    <div>
+                        <h1 class="page-title">智能挑战系统</h1>
+                        <p class="page-subtitle">AI定制化健康挑战，科学提升身体素质</p>
+                    </div>
+                    <button class="btn-primary" onclick="createChallenge()">
+                        <i class="fas fa-rocket"></i> 创建智能挑战
+                    </button>
+                </div>
+
+                <div class="stat-cards" id="challengesContainer">
+                    <div class="loading">
+                        <i class="fas fa-trophy"></i>
+                        <p>正在加载您的挑战...</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 健康伙伴页面 -->
+            <div id="friends" class="page">
+                <div class="page-header">
+                    <div>
+                        <h1 class="page-title">健康伙伴管理</h1>
+                        <p class="page-subtitle">建立健康社交网络，共同实现健康目标</p>
+                    </div>
+                    <button class="btn-primary" onclick="addFriend()">
+                        <i class="fas fa-user-plus"></i> 添加健康伙伴
+                    </button>
+                </div>
+
+                <div class="card">
+                    <h3 style="margin-bottom: 25px; color: var(--text-primary); font-size: 22px;">我的健康伙伴</h3>
+                    <div class="stat-cards" id="friendsList">
+                        <div class="loading">
+                            <i class="fas fa-users"></i>
+                            <p>正在加载您的健康伙伴...</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 消息中心页面 -->
+            <div id="notifications" class="page">
+                <div class="page-header">
+                    <div>
+                        <h1 class="page-title">智能消息中心</h1>
+                        <p class="page-subtitle">实时接收健康提醒和系统通知</p>
+                    </div>
+                    <button class="btn-primary" onclick="markAllRead()">
+                        <i class="fas fa-check-double"></i> 全部标记已读
+                    </button>
+                </div>
+
+                <div class="card">
+                    <div id="notificationsList">
+                        <div class="loading">
+                            <i class="fas fa-bell"></i>
+                            <p>正在加载您的消息...</p>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
+</div>
 
-    <!-- 提示消息 -->
-    <div id="toast" class="toast"></div>
+<!-- 提示消息 -->
+<div id="toast" class="toast"></div>
 
-    <script src="assets/js/main.js"></script>
-    <script src="assets/js/dashboard.js"></script>
-    <script src="assets/js/health.js"></script>
-    <script src="assets/js/ai.js"></script>
-    <script src="assets/js/social.js"></script>
-    <script src="assets/js/challenge.js"></script>
-    <script src="assets/js/friends.js"></script>
-    <script src="assets/js/notification.js"></script>
+<script src="assets/js/main.js"></script>
+<script src="assets/js/dashboard.js"></script>
+<script src="assets/js/health.js"></script>
+<script src="assets/js/ai.js"></script>
+<script src="assets/js/social.js"></script>
+<script src="assets/js/challenge.js"></script>
+<script src="assets/js/friends.js"></script>
+<script src="assets/js/notification.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </body>
 </html>

@@ -1,6 +1,6 @@
 // 全局变量
 const API_BASE = 'http://47.96.237.130:5000/api';
-let currentUser = null;
+
 
 // 显示提示消息
 function showToast(message, type = 'info', duration = 3000) {

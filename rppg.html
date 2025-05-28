@@ -1,0 +1,3025 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RayVita-Synapse | Advanced Neural Health Analytics Platform</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.9.1/chart.min.js"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Inter:wght@300;400;500;600;700&display=swap');
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary-cyan: #00ffff;
+            --primary-blue: #0080ff;
+            --primary-purple: #8000ff;
+            --accent-pink: #ff0080;
+            --accent-green: #00ff88;
+            --accent-orange: #ff8800;
+            --accent-gold: #ffd700;
+            --dark-bg: #0a0a0f;
+            --card-bg: rgba(255, 255, 255, 0.03);
+            --glass-bg: rgba(255, 255, 255, 0.05);
+            --border-glow: rgba(0, 255, 255, 0.3);
+            --text-primary: #ffffff;
+            --text-secondary: #b0b0b0;
+            --text-muted: #808080;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: radial-gradient(ellipse at top, #1a1a2e 0%, #16213e 25%, #0f1419 50%, var(--dark-bg) 100%);
+            color: var(--text-primary);
+            min-height: 100vh;
+            overflow-x: hidden;
+            position: relative;
+        }
+
+        /* Enhanced Background Effects */
+        .neural-background {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -3;
+        }
+
+        .neural-nodes {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background-image:
+                radial-gradient(3px 3px at 20px 30px, var(--primary-cyan), transparent),
+                radial-gradient(2px 2px at 40px 70px, var(--primary-blue), transparent),
+                radial-gradient(2px 2px at 90px 40px, var(--accent-pink), transparent),
+                radial-gradient(1px 1px at 130px 80px, var(--primary-purple), transparent),
+                radial-gradient(2px 2px at 160px 30px, var(--accent-green), transparent);
+            background-size: 200px 200px, 150px 150px, 180px 180px, 120px 120px, 140px 140px;
+            animation: neuralFloat 20s linear infinite;
+            opacity: 0.4;
+        }
+
+        @keyframes neuralFloat {
+            0% { transform: translate(0, 0) rotate(0deg); }
+            100% { transform: translate(-200px, -200px) rotate(360deg); }
+        }
+
+        .grid-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image:
+                linear-gradient(rgba(0, 255, 255, 0.08) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(0, 255, 255, 0.08) 1px, transparent 1px);
+            background-size: 60px 60px;
+            z-index: -2;
+            animation: gridPulse 8s ease-in-out infinite;
+        }
+
+        @keyframes gridPulse {
+            0%, 100% { opacity: 0.3; }
+            50% { opacity: 0.7; }
+        }
+
+        .constellation {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            opacity: 0.2;
+        }
+
+        .star {
+            position: absolute;
+            width: 2px;
+            height: 2px;
+            background: var(--primary-cyan);
+            border-radius: 50%;
+            animation: twinkle 3s ease-in-out infinite alternate;
+        }
+
+        @keyframes twinkle {
+            0% { opacity: 0.3; transform: scale(1); }
+            100% { opacity: 1; transform: scale(1.5); }
+        }
+
+        /* App Container */
+        .app-container {
+            position: relative;
+            min-height: 100vh;
+        }
+
+        /* Enhanced Login Screen */
+        .login-screen {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+            backdrop-filter: blur(20px);
+            background: rgba(0, 0, 0, 0.8);
+        }
+
+        .login-container {
+            background: var(--glass-bg);
+            border: 2px solid var(--border-glow);
+            border-radius: 24px;
+            padding: 50px;
+            backdrop-filter: blur(30px);
+            box-shadow: 0 25px 60px rgba(0, 255, 255, 0.15);
+            width: 100%;
+            max-width: 480px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .login-container::before {
+            content: '';
+            position: absolute;
+            top: -3px;
+            left: -3px;
+            right: -3px;
+            bottom: -3px;
+            background: linear-gradient(45deg, var(--primary-cyan), var(--primary-blue), var(--primary-purple), var(--accent-pink));
+            border-radius: 24px;
+            z-index: -1;
+            animation: borderGlow 4s ease-in-out infinite;
+        }
+
+        @keyframes borderGlow {
+            0%, 100% { opacity: 0.6; }
+            50% { opacity: 1; }
+        }
+
+        .logo-section {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .logo-icon {
+            width: 100px;
+            height: 100px;
+            background: linear-gradient(45deg, var(--primary-cyan), var(--primary-blue));
+            border-radius: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 25px;
+            font-family: 'Orbitron', monospace;
+            font-size: 48px;
+            font-weight: 900;
+            color: #000;
+            animation: logoSpin 12s linear infinite;
+            box-shadow: 0 15px 40px rgba(0, 255, 255, 0.4);
+        }
+
+        .app-title {
+            font-family: 'Orbitron', monospace;
+            font-size: 32px;
+            font-weight: 900;
+            letter-spacing: 3px;
+            background: linear-gradient(45deg, var(--primary-cyan), var(--primary-blue));
+            background-clip: text;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 15px;
+        }
+
+        .app-subtitle {
+            color: var(--text-secondary);
+            font-size: 16px;
+            letter-spacing: 1px;
+            line-height: 1.4;
+        }
+
+        .form-group {
+            margin-bottom: 25px;
+        }
+
+        .form-label {
+            display: block;
+            margin-bottom: 10px;
+            color: var(--primary-cyan);
+            font-size: 14px;
+            font-weight: 600;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+        }
+
+        .form-input {
+            width: 100%;
+            padding: 18px 24px;
+            background: rgba(0, 0, 0, 0.4);
+            border: 1px solid rgba(0, 255, 255, 0.3);
+            border-radius: 15px;
+            color: var(--text-primary);
+            font-size: 16px;
+            transition: all 0.3s ease;
+            font-family: 'Inter', sans-serif;
+        }
+
+        .form-input:focus {
+            outline: none;
+            border-color: var(--primary-cyan);
+            box-shadow: 0 0 25px rgba(0, 255, 255, 0.4);
+            background: rgba(0, 255, 255, 0.05);
+            transform: translateY(-2px);
+        }
+
+        .auth-button {
+            width: 100%;
+            padding: 18px;
+            background: linear-gradient(45deg, var(--primary-cyan), var(--primary-blue));
+            border: none;
+            border-radius: 15px;
+            color: #000;
+            font-size: 16px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+            margin-bottom: 20px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .auth-button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 15px 40px rgba(0, 255, 255, 0.5);
+        }
+
+        .auth-toggle {
+            text-align: center;
+            color: var(--text-secondary);
+            font-size: 14px;
+            margin-top: 20px;
+        }
+
+        .auth-toggle a {
+            color: var(--primary-cyan);
+            text-decoration: none;
+            cursor: pointer;
+            font-weight: 600;
+        }
+
+        /* Enhanced Main App Layout */
+        .main-app {
+            display: none;
+        }
+
+        .app-header {
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            background: rgba(0, 0, 0, 0.85);
+            backdrop-filter: blur(25px);
+            border-bottom: 2px solid var(--border-glow);
+            padding: 25px 50px;
+            box-shadow: 0 8px 32px rgba(0, 255, 255, 0.1);
+        }
+
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            max-width: 1600px;
+            margin: 0 auto;
+        }
+
+        .header-logo {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .header-logo-icon {
+            width: 50px;
+            height: 50px;
+            background: linear-gradient(45deg, var(--primary-cyan), var(--primary-blue));
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: 'Orbitron', monospace;
+            font-weight: 900;
+            color: #000;
+            font-size: 24px;
+            animation: logoSpin 15s linear infinite;
+            box-shadow: 0 8px 25px rgba(0, 255, 255, 0.3);
+        }
+
+        .header-title {
+            font-family: 'Orbitron', monospace;
+            font-size: 28px;
+            font-weight: 700;
+            color: var(--primary-cyan);
+            letter-spacing: 2px;
+        }
+
+        .header-nav {
+            display: flex;
+            gap: 10px;
+            background: rgba(0, 0, 0, 0.3);
+            padding: 8px;
+            border-radius: 15px;
+            border: 1px solid rgba(0, 255, 255, 0.2);
+        }
+
+        .nav-item {
+            padding: 12px 24px;
+            cursor: pointer;
+            border-radius: 10px;
+            transition: all 0.3s ease;
+            font-weight: 500;
+            border: 1px solid transparent;
+            font-size: 14px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .nav-item:hover {
+            background: var(--glass-bg);
+            border-color: var(--border-glow);
+            transform: translateY(-2px);
+        }
+
+        .nav-item.active {
+            background: linear-gradient(45deg, var(--primary-cyan), var(--primary-blue));
+            color: #000;
+            font-weight: 700;
+            box-shadow: 0 5px 15px rgba(0, 255, 255, 0.3);
+        }
+
+        .header-user {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .user-avatar {
+            width: 45px;
+            height: 45px;
+            background: linear-gradient(45deg, var(--accent-pink), var(--primary-purple));
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            color: #fff;
+            font-size: 18px;
+            box-shadow: 0 5px 15px rgba(255, 0, 128, 0.3);
+        }
+
+        .logout-btn {
+            padding: 10px 20px;
+            background: rgba(255, 0, 128, 0.2);
+            border: 1px solid var(--accent-pink);
+            border-radius: 10px;
+            color: var(--accent-pink);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: 600;
+            text-transform: uppercase;
+            font-size: 12px;
+            letter-spacing: 1px;
+        }
+
+        .logout-btn:hover {
+            background: var(--accent-pink);
+            color: #000;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(255, 0, 128, 0.4);
+        }
+
+        /* Enhanced Content Area */
+        .content-area {
+            padding: 50px;
+            max-width: 1600px;
+            margin: 0 auto;
+        }
+
+        /* Panel Styles */
+        .panel {
+            display: none;
+            animation: panelSlide 0.5s ease-out;
+        }
+
+        .panel.active {
+            display: block;
+        }
+
+        @keyframes panelSlide {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .panel-header {
+            margin-bottom: 40px;
+            text-align: center;
+        }
+
+        .panel-title {
+            font-family: 'Orbitron', monospace;
+            font-size: 42px;
+            font-weight: 700;
+            background: linear-gradient(45deg, var(--primary-cyan), var(--primary-blue), var(--primary-purple));
+            background-clip: text;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 15px;
+            letter-spacing: 2px;
+        }
+
+        .panel-subtitle {
+            color: var(--text-secondary);
+            font-size: 18px;
+            line-height: 1.6;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        /* Enhanced Card Grid */
+        .card-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+            gap: 30px;
+            margin-bottom: 40px;
+        }
+
+        .card-grid.dense {
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 25px;
+        }
+
+        .card-grid.wide {
+            grid-template-columns: repeat(auto-fit, minmax(500px, 1fr));
+        }
+
+        /* Enhanced Neural Card */
+        .neural-card {
+            background: var(--card-bg);
+            border: 1px solid var(--border-glow);
+            border-radius: 25px;
+            padding: 35px;
+            backdrop-filter: blur(25px);
+            transition: all 0.4s ease;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0, 255, 255, 0.05);
+        }
+
+        .neural-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 3px;
+            background: linear-gradient(90deg, transparent, var(--primary-cyan), transparent);
+            animation: cardScan 5s linear infinite;
+        }
+
+        @keyframes cardScan {
+            0% { left: -100%; }
+            100% { left: 100%; }
+        }
+
+        .neural-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 25px 60px rgba(0, 255, 255, 0.2);
+            border-color: var(--primary-cyan);
+        }
+
+        .neural-card.featured {
+            border: 2px solid var(--accent-gold);
+            box-shadow: 0 15px 40px rgba(255, 215, 0, 0.1);
+        }
+
+        .neural-card.featured::before {
+            background: linear-gradient(90deg, transparent, var(--accent-gold), transparent);
+        }
+
+        .card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+        }
+
+        .card-title {
+            font-family: 'Orbitron', monospace;
+            font-size: 20px;
+            font-weight: 600;
+            color: var(--primary-cyan);
+            letter-spacing: 1px;
+        }
+
+        .card-subtitle {
+            color: var(--text-secondary);
+            font-size: 14px;
+            margin-top: 5px;
+        }
+
+        .card-icon {
+            width: 40px;
+            height: 40px;
+            background: linear-gradient(45deg, var(--accent-pink), var(--primary-purple));
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+            animation: iconFloat 4s ease-in-out infinite;
+        }
+
+        @keyframes iconFloat {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-8px); }
+        }
+
+        /* Enhanced Metrics */
+        .metrics-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+            gap: 20px;
+        }
+
+        .metric-item {
+            text-align: center;
+            padding: 25px;
+            background: rgba(0, 255, 255, 0.05);
+            border: 1px solid rgba(0, 255, 255, 0.2);
+            border-radius: 15px;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .metric-item::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(45deg, transparent, rgba(0, 255, 255, 0.1), transparent);
+            transform: translateX(-100%);
+            transition: transform 0.6s ease;
+        }
+
+        .metric-item:hover::before {
+            transform: translateX(100%);
+        }
+
+        .metric-item:hover {
+            background: rgba(0, 255, 255, 0.1);
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0, 255, 255, 0.2);
+        }
+
+        .metric-value {
+            font-family: 'Orbitron', monospace;
+            font-size: 28px;
+            font-weight: 700;
+            color: var(--primary-cyan);
+            margin-bottom: 10px;
+            text-shadow: 0 0 10px rgba(0, 255, 255, 0.3);
+        }
+
+        .metric-label {
+            font-size: 12px;
+            color: var(--text-secondary);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            font-weight: 600;
+        }
+
+        .metric-trend {
+            margin-top: 8px;
+            font-size: 14px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 5px;
+        }
+
+        .trend-up { color: var(--accent-green); }
+        .trend-down { color: var(--accent-pink); }
+        .trend-stable { color: var(--accent-orange); }
+
+        /* Enhanced Chart Container */
+        .chart-container {
+            position: relative;
+            height: 320px;
+            margin-top: 25px;
+            padding: 10px;
+            background: rgba(0, 0, 0, 0.2);
+            border-radius: 15px;
+            border: 1px solid rgba(0, 255, 255, 0.1);
+        }
+
+        .chart-container.large {
+            height: 450px;
+        }
+
+        .chart-container.xlarge {
+            height: 500px;
+        }
+
+        /* Enhanced AI Analysis */
+        .ai-analysis {
+            background: linear-gradient(135deg, rgba(0, 255, 255, 0.05), rgba(128, 0, 255, 0.05));
+            border: 2px solid var(--border-glow);
+            border-radius: 20px;
+            padding: 30px;
+            margin-top: 25px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .ai-analysis::before {
+            content: '';
+            position: absolute;
+            top: -2px;
+            left: -2px;
+            right: -2px;
+            bottom: -2px;
+            background: linear-gradient(45deg, var(--primary-purple), var(--accent-pink), var(--primary-cyan));
+            border-radius: 20px;
+            z-index: -1;
+            animation: aiGlow 3s ease-in-out infinite;
+        }
+
+        @keyframes aiGlow {
+            0%, 100% { opacity: 0.3; }
+            50% { opacity: 0.8; }
+        }
+
+        .ai-header {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            margin-bottom: 25px;
+        }
+
+        .ai-icon {
+            width: 50px;
+            height: 50px;
+            background: linear-gradient(45deg, var(--primary-purple), var(--accent-pink));
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            animation: aiPulse 2s ease-in-out infinite;
+            box-shadow: 0 8px 25px rgba(128, 0, 255, 0.4);
+        }
+
+        @keyframes aiPulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+        }
+
+        .ai-title {
+            font-family: 'Orbitron', monospace;
+            font-size: 24px;
+            font-weight: 600;
+            color: var(--primary-purple);
+            letter-spacing: 1px;
+        }
+
+        .ai-status {
+            font-size: 14px;
+            color: var(--accent-green);
+            font-weight: 500;
+        }
+
+        .ai-content {
+            line-height: 1.8;
+            color: var(--text-primary);
+            font-size: 16px;
+        }
+
+        .ai-insight {
+            background: rgba(0, 0, 0, 0.4);
+            border-left: 4px solid var(--accent-green);
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 10px;
+            position: relative;
+        }
+
+        .ai-insight.warning {
+            border-left-color: var(--accent-orange);
+        }
+
+        .ai-insight.alert {
+            border-left-color: var(--accent-pink);
+        }
+
+        .ai-insight::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 0;
+            width: 4px;
+            height: 100%;
+            background: linear-gradient(to bottom, transparent, var(--accent-green), transparent);
+            animation: insightPulse 2s ease-in-out infinite;
+        }
+
+        @keyframes insightPulse {
+            0%, 100% { opacity: 0.5; }
+            50% { opacity: 1; }
+        }
+
+        /* Enhanced Social Styles */
+        .social-section {
+            margin-bottom: 35px;
+        }
+
+        .social-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 25px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid rgba(0, 255, 255, 0.2);
+        }
+
+        .social-title {
+            font-family: 'Orbitron', monospace;
+            font-size: 22px;
+            color: var(--primary-cyan);
+            letter-spacing: 1px;
+        }
+
+        .social-count {
+            background: var(--glass-bg);
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 14px;
+            color: var(--accent-green);
+            border: 1px solid rgba(0, 255, 136, 0.3);
+        }
+
+        .post-item, .friend-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            padding: 20px;
+            background: var(--card-bg);
+            border: 1px solid rgba(0, 255, 255, 0.2);
+            border-radius: 15px;
+            margin-bottom: 15px;
+            transition: all 0.3s ease;
+        }
+
+        .post-item:hover, .friend-item:hover {
+            background: rgba(0, 255, 255, 0.05);
+            border-color: var(--primary-cyan);
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(0, 255, 255, 0.1);
+        }
+
+        .post-content {
+            flex: 1;
+            margin-right: 20px;
+        }
+
+        .post-header {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 15px;
+        }
+
+        .post-avatar {
+            width: 40px;
+            height: 40px;
+            background: linear-gradient(45deg, var(--accent-green), var(--primary-blue));
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            color: #fff;
+        }
+
+        .post-meta {
+            flex: 1;
+        }
+
+        .post-author {
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: 3px;
+        }
+
+        .post-time {
+            font-size: 12px;
+            color: var(--text-muted);
+        }
+
+        .post-text {
+            line-height: 1.6;
+            margin-bottom: 15px;
+            color: var(--text-primary);
+        }
+
+        .post-actions {
+            display: flex;
+            gap: 15px;
+            align-items: center;
+        }
+
+        .action-btn {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 8px 16px;
+            border: 1px solid;
+            border-radius: 20px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 12px;
+            font-weight: 500;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .btn-like {
+            border-color: var(--accent-pink);
+            color: var(--accent-pink);
+        }
+
+        .btn-like:hover, .btn-like.liked {
+            background: var(--accent-pink);
+            color: #000;
+        }
+
+        .btn-comment {
+            border-color: var(--primary-blue);
+            color: var(--primary-blue);
+        }
+
+        .btn-comment:hover {
+            background: var(--primary-blue);
+            color: #000;
+        }
+
+        .btn-accept {
+            border-color: var(--accent-green);
+            color: var(--accent-green);
+        }
+
+        .btn-accept:hover {
+            background: var(--accent-green);
+            color: #000;
+        }
+
+        .btn-reject {
+            border-color: var(--accent-pink);
+            color: var(--accent-pink);
+        }
+
+        .btn-reject:hover {
+            background: var(--accent-pink);
+            color: #000;
+        }
+
+        /* rPPG Records Enhanced Display */
+        .record-item {
+            background: var(--card-bg);
+            border: 1px solid rgba(0, 255, 255, 0.2);
+            border-radius: 15px;
+            padding: 25px;
+            margin-bottom: 20px;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .record-item::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, var(--accent-green), transparent);
+            animation: recordScan 4s linear infinite;
+        }
+
+        @keyframes recordScan {
+            0% { left: -100%; }
+            100% { left: 100%; }
+        }
+
+        .record-item:hover {
+            border-color: var(--primary-cyan);
+            box-shadow: 0 10px 30px rgba(0, 255, 255, 0.1);
+            transform: translateY(-3px);
+        }
+
+        .record-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .record-id {
+            font-family: 'Orbitron', monospace;
+            color: var(--primary-cyan);
+            font-weight: 600;
+            font-size: 16px;
+        }
+
+        .record-time {
+            color: var(--text-secondary);
+            font-size: 14px;
+        }
+
+        .record-metrics {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        .record-metric {
+            text-align: center;
+            padding: 15px;
+            background: rgba(0, 255, 255, 0.05);
+            border-radius: 10px;
+            border: 1px solid rgba(0, 255, 255, 0.1);
+        }
+
+        .record-metric-value {
+            font-family: 'Orbitron', monospace;
+            font-size: 18px;
+            font-weight: 700;
+            color: var(--primary-cyan);
+            margin-bottom: 5px;
+        }
+
+        .record-metric-label {
+            font-size: 10px;
+            color: var(--text-secondary);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .record-quality {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-top: 15px;
+        }
+
+        .quality-bar {
+            flex: 1;
+            height: 8px;
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 4px;
+            overflow: hidden;
+        }
+
+        .quality-fill {
+            height: 100%;
+            background: linear-gradient(90deg, var(--accent-pink), var(--accent-orange), var(--accent-green));
+            border-radius: 4px;
+            transition: width 0.5s ease;
+        }
+
+        .quality-label {
+            font-size: 12px;
+            color: var(--text-secondary);
+            font-weight: 600;
+        }
+
+        /* Educational Content Styles */
+        .education-section {
+            background: linear-gradient(135deg, rgba(0, 128, 255, 0.05), rgba(0, 255, 255, 0.05));
+            border: 1px solid var(--primary-blue);
+            border-radius: 20px;
+            padding: 30px;
+            margin-bottom: 30px;
+        }
+
+        .education-header {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            margin-bottom: 25px;
+        }
+
+        .education-icon {
+            width: 50px;
+            height: 50px;
+            background: linear-gradient(45deg, var(--primary-blue), var(--primary-cyan));
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+        }
+
+        .education-title {
+            font-family: 'Orbitron', monospace;
+            font-size: 24px;
+            color: var(--primary-blue);
+            font-weight: 600;
+        }
+
+        .education-content {
+            line-height: 1.8;
+            color: var(--text-primary);
+        }
+
+        .education-feature {
+            display: flex;
+            align-items: flex-start;
+            gap: 15px;
+            margin: 20px 0;
+            padding: 15px;
+            background: rgba(0, 0, 0, 0.2);
+            border-radius: 10px;
+            border-left: 3px solid var(--primary-blue);
+        }
+
+        .feature-icon {
+            color: var(--primary-cyan);
+            font-size: 18px;
+            margin-top: 2px;
+        }
+
+        /* Download Section */
+        .download-section {
+            text-align: center;
+            background: linear-gradient(135deg, rgba(255, 215, 0, 0.1), rgba(255, 136, 0, 0.1));
+            border: 2px solid var(--accent-gold);
+            border-radius: 25px;
+            padding: 50px;
+            margin: 40px 0;
+        }
+
+        .download-title {
+            font-family: 'Orbitron', monospace;
+            font-size: 36px;
+            color: var(--accent-gold);
+            margin-bottom: 20px;
+            font-weight: 700;
+        }
+
+        .download-subtitle {
+            color: var(--text-secondary);
+            font-size: 18px;
+            margin-bottom: 30px;
+            line-height: 1.6;
+        }
+
+        .download-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            flex-wrap: wrap;
+        }
+
+        .download-btn {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            padding: 20px 30px;
+            background: linear-gradient(45deg, var(--accent-gold), var(--accent-orange));
+            border: none;
+            border-radius: 15px;
+            color: #000;
+            font-size: 16px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+        }
+
+        .download-btn:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 40px rgba(255, 215, 0, 0.4);
+        }
+
+        .download-icon {
+            font-size: 24px;
+        }
+
+        /* Contact & Map Styles */
+        .contact-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 40px;
+            margin-top: 30px;
+        }
+
+        .contact-info {
+            background: var(--card-bg);
+            border: 1px solid var(--border-glow);
+            border-radius: 20px;
+            padding: 30px;
+        }
+
+        .contact-item {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        .contact-icon {
+            width: 40px;
+            height: 40px;
+            background: linear-gradient(45deg, var(--primary-cyan), var(--primary-blue));
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #000;
+            font-weight: 700;
+        }
+
+        .map-container {
+            background: var(--card-bg);
+            border: 1px solid var(--border-glow);
+            border-radius: 20px;
+            padding: 20px;
+            height: 400px;
+            overflow: hidden;
+        }
+
+        .map-placeholder {
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(45deg, rgba(0, 255, 255, 0.1), rgba(0, 128, 255, 0.1));
+            border-radius: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 18px;
+            color: var(--text-secondary);
+        }
+
+        /* Utility Classes */
+        .loading {
+            text-align: center;
+            padding: 60px;
+            color: var(--primary-cyan);
+        }
+
+        .spinner {
+            width: 50px;
+            height: 50px;
+            border: 4px solid rgba(0, 255, 255, 0.1);
+            border-top: 4px solid var(--primary-cyan);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 25px;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .error-message {
+            background: rgba(255, 0, 128, 0.1);
+            border: 1px solid var(--accent-pink);
+            border-radius: 10px;
+            padding: 20px;
+            color: var(--accent-pink);
+            margin: 20px 0;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .success-message {
+            background: rgba(0, 255, 136, 0.1);
+            border: 1px solid var(--accent-green);
+            border-radius: 10px;
+            padding: 20px;
+            color: var(--accent-green);
+            margin: 20px 0;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 1200px) {
+            .card-grid {
+                grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            }
+
+            .contact-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .app-header {
+                padding: 20px 25px;
+            }
+
+            .header-content {
+                flex-direction: column;
+                gap: 20px;
+            }
+
+            .header-nav {
+                gap: 5px;
+                padding: 5px;
+            }
+
+            .nav-item {
+                padding: 10px 16px;
+                font-size: 12px;
+            }
+
+            .content-area {
+                padding: 25px;
+            }
+
+            .card-grid {
+                grid-template-columns: 1fr;
+                gap: 20px;
+            }
+
+            .login-container {
+                padding: 30px 25px;
+                margin: 20px;
+            }
+
+            .panel-title {
+                font-size: 32px;
+            }
+
+            .download-buttons {
+                flex-direction: column;
+                align-items: center;
+            }
+        }
+
+        @keyframes logoSpin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        /* Stars for constellation effect */
+        .star:nth-child(1) { top: 10%; left: 20%; animation-delay: 0s; }
+        .star:nth-child(2) { top: 20%; left: 80%; animation-delay: 1s; }
+        .star:nth-child(3) { top: 60%; left: 30%; animation-delay: 2s; }
+        .star:nth-child(4) { top: 80%; left: 70%; animation-delay: 0.5s; }
+        .star:nth-child(5) { top: 40%; left: 60%; animation-delay: 1.5s; }
+    </style>
+</head>
+<body>
+    <div class="neural-background">
+        <div class="neural-nodes"></div>
+    </div>
+    <div class="grid-overlay"></div>
+    <div class="constellation">
+        <div class="star"></div>
+        <div class="star"></div>
+        <div class="star"></div>
+        <div class="star"></div>
+        <div class="star"></div>
+    </div>
+
+    <div class="app-container">
+        <!-- Login Screen -->
+        <div class="login-screen" id="loginScreen">
+            <div class="login-container">
+                <div class="logo-section">
+                    <div class="logo-icon">R</div>
+                    <div class="app-title">RayVita-Synapse</div>
+                    <div class="app-subtitle">Advanced Neural Health Analytics Platform<br>Contactless Health Monitoring & AI Insights</div>
+                </div>
+
+                <form id="authForm">
+                    <div class="form-group">
+                        <label class="form-label">Email Address</label>
+                        <input type="email" class="form-input" id="email" required placeholder="your.email@domain.com">
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">Password</label>
+                        <input type="password" class="form-input" id="password" required placeholder="Enter your password">
+                    </div>
+
+                    <div class="form-group" id="nicknameGroup" style="display: none;">
+                        <label class="form-label">Display Name</label>
+                        <input type="text" class="form-input" id="nickname" placeholder="Your display name">
+                    </div>
+
+                    <button type="submit" class="auth-button" id="authButton">
+                        Access Neural Network
+                    </button>
+
+                    <div class="auth-toggle">
+                        New to RayVita? <a href="#" id="toggleAuth">Create Neural Profile</a>
+                    </div>
+                </form>
+
+                <div id="authMessage"></div>
+            </div>
+        </div>
+
+        <!-- Main Application -->
+        <div class="main-app" id="mainApp">
+            <!-- Enhanced Header -->
+            <header class="app-header">
+                <div class="header-content">
+                    <div class="header-logo">
+                        <div class="header-logo-icon">R</div>
+                        <div>
+                            <div class="header-title">RayVita-Synapse</div>
+                            <div style="font-size: 12px; color: var(--text-secondary); letter-spacing: 1px;">Neural Health Analytics</div>
+                        </div>
+                    </div>
+
+                    <nav class="header-nav">
+                        <div class="nav-item active" data-panel="dashboard">Dashboard</div>
+                        <div class="nav-item" data-panel="records">rPPG Records</div>
+                        <div class="nav-item" data-panel="analysis">AI Analysis</div>
+                        <div class="nav-item" data-panel="social">Social Feed</div>
+                        <div class="nav-item" data-panel="about">About rPPG</div>
+                        <div class="nav-item" data-panel="download">Get App</div>
+                        <div class="nav-item" data-panel="contact">Contact</div>
+                    </nav>
+
+                    <div class="header-user">
+                        <div class="user-avatar" id="userAvatar">U</div>
+                        <div>
+                            <div id="userName" style="font-weight: 600;">User</div>
+                            <div style="font-size: 12px; color: var(--text-secondary);">Neural ID: <span id="userId">--</span></div>
+                        </div>
+                        <button class="logout-btn" onclick="logout()">Logout</button>
+                    </div>
+                </div>
+            </header>
+
+            <!-- Enhanced Content Area -->
+            <main class="content-area">
+                <!-- Dashboard Panel -->
+                <div class="panel active" id="dashboard">
+                    <div class="panel-header">
+                        <h1 class="panel-title">Neural Health Dashboard</h1>
+                        <p class="panel-subtitle">Real-time biometric analysis powered by advanced rPPG technology and AI-driven health insights</p>
+                    </div>
+
+                    <div class="card-grid">
+                        <!-- Enhanced Vital Signs Card -->
+                        <div class="neural-card featured">
+                            <div class="card-header">
+                                <div>
+                                    <h3 class="card-title">Vital Matrix</h3>
+                                    <div class="card-subtitle">Live biometric monitoring</div>
+                                </div>
+                                <div class="card-icon">💗</div>
+                            </div>
+                            <div class="metrics-grid" id="vitalMetrics">
+                                <!-- Metrics will be populated here -->
+                            </div>
+                        </div>
+
+                        <!-- Heart Rate Chart -->
+                        <div class="neural-card">
+                            <div class="card-header">
+                                <div>
+                                    <h3 class="card-title">Cardiac Rhythm Analysis</h3>
+                                    <div class="card-subtitle">Heart rate variability trends</div>
+                                </div>
+                                <div class="card-icon">📈</div>
+                            </div>
+                            <div class="chart-container">
+                                <canvas id="heartRateChart"></canvas>
+                            </div>
+                        </div>
+
+                        <!-- HRV Analysis -->
+                        <div class="neural-card">
+                            <div class="card-header">
+                                <div>
+                                    <h3 class="card-title">HRV Neural Pattern</h3>
+                                    <div class="card-subtitle">Autonomic nervous system analysis</div>
+                                </div>
+                                <div class="card-icon">🧠</div>
+                            </div>
+                            <div class="chart-container">
+                                <canvas id="hrvChart"></canvas>
+                            </div>
+                        </div>
+
+                        <!-- SpO2 Monitoring -->
+                        <div class="neural-card">
+                            <div class="card-header">
+                                <div>
+                                    <h3 class="card-title">Oxygen Saturation</h3>
+                                    <div class="card-subtitle">Blood oxygenation levels</div>
+                                </div>
+                                <div class="card-icon">🫁</div>
+                            </div>
+                            <div class="chart-container">
+                                <canvas id="spo2Chart"></canvas>
+                            </div>
+                        </div>
+
+                        <!-- Signal Quality Assessment -->
+                        <div class="neural-card">
+                            <div class="card-header">
+                                <div>
+                                    <h3 class="card-title">Signal Quality Matrix</h3>
+                                    <div class="card-subtitle">rPPG signal analysis metrics</div>
+                                </div>
+                                <div class="card-icon">📡</div>
+                            </div>
+                            <div class="chart-container">
+                                <canvas id="qualityChart"></canvas>
+                            </div>
+                        </div>
+
+                        <!-- Recent Activity -->
+                        <div class="neural-card">
+                            <div class="card-header">
+                                <div>
+                                    <h3 class="card-title">Recent Neural Activity</h3>
+                                    <div class="card-subtitle">Latest health measurements</div>
+                                </div>
+                                <div class="card-icon">⚡</div>
+                            </div>
+                            <div id="recentActivity">
+                                <!-- Recent measurements will be populated here -->
+                            </div>
+                        </div>
+                    </div>
+
+                    <div id="loadingDashboard" class="loading" style="display: none;">
+                        <div class="spinner"></div>
+                        <div>Synchronizing neural data streams...</div>
+                    </div>
+                </div>
+
+                <!-- Enhanced rPPG Records Panel -->
+                <div class="panel" id="records">
+                    <div class="panel-header">
+                        <h1 class="panel-title">rPPG Detection Records</h1>
+                        <p class="panel-subtitle">Comprehensive analysis of your photoplethysmography measurements and signal quality assessments</p>
+                    </div>
+
+                    <div class="neural-card">
+                        <div class="card-header">
+                            <div>
+                                <h3 class="card-title">Measurement History</h3>
+                                <div class="card-subtitle">Detailed rPPG session records</div>
+                            </div>
+                            <div class="card-icon">📊</div>
+                        </div>
+
+                        <div class="metrics-grid" style="margin-bottom: 30px;">
+                            <div class="metric-item">
+                                <div class="metric-value" id="totalSessions">--</div>
+                                <div class="metric-label">Total Sessions</div>
+                            </div>
+                            <div class="metric-item">
+                                <div class="metric-value" id="avgHeartRate">--</div>
+                                <div class="metric-label">Average HR</div>
+                            </div>
+                            <div class="metric-item">
+                                <div class="metric-value" id="avgConfidence">--</div>
+                                <div class="metric-label">Avg Confidence</div>
+                            </div>
+                            <div class="metric-item">
+                                <div class="metric-value" id="lastMeasurement">--</div>
+                                <div class="metric-label">Last Measurement</div>
+                            </div>
+                        </div>
+
+                        <div id="recordsList">
+                            <!-- Records will be populated here -->
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Enhanced AI Analysis Panel -->
+                <div class="panel" id="analysis">
+                    <div class="panel-header">
+                        <h1 class="panel-title">AI Neural Analysis</h1>
+                        <p class="panel-subtitle">Advanced health insights powered by DeepSeek AI and machine learning algorithms</p>
+                    </div>
+
+                    <div class="neural-card">
+                        <div class="card-header">
+                            <div>
+                                <h3 class="card-title">Health Analysis Engine</h3>
+                                <div class="card-subtitle">AI-powered biometric insights</div>
+                            </div>
+                            <div class="card-icon">🤖</div>
+                        </div>
+
+                        <button class="auth-button" onclick="performAIAnalysis()" style="margin-bottom: 30px;">
+                            🧠 Generate Advanced AI Health Analysis
+                        </button>
+
+                        <div id="aiAnalysisContent">
+                            <div class="ai-analysis" style="border: 2px dashed rgba(0, 255, 255, 0.3); text-align: center;">
+                                <div class="ai-icon" style="margin: 0 auto 20px;">🔬</div>
+                                <h4 style="color: var(--primary-cyan); margin-bottom: 15px;">Ready for Neural Analysis</h4>
+                                <p style="color: var(--text-secondary);">Click the button above to generate comprehensive AI insights based on your rPPG measurements, heart rate variability patterns, and physiological indicators.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Enhanced Social Panel -->
+                <div class="panel" id="social">
+                    <div class="panel-header">
+                        <h1 class="panel-title">Social Health Network</h1>
+                        <p class="panel-subtitle">Connect with the health community, share insights, and stay motivated on your wellness journey</p>
+                    </div>
+
+                    <div class="card-grid">
+                        <!-- Social Feed -->
+                        <div class="neural-card">
+                            <div class="social-section">
+                                <div class="social-header">
+                                    <h3 class="social-title">Health Feed</h3>
+                                    <div class="social-count" id="postsCount">0 Posts</div>
+                                </div>
+
+                                <div style="margin-bottom: 20px;">
+                                    <textarea class="form-input" id="postText" placeholder="Share your health journey..." rows="3" style="resize: vertical;"></textarea>
+                                    <button class="auth-button" onclick="createPost()" style="margin-top: 15px;">
+                                        📝 Share Health Update
+                                    </button>
+                                </div>
+
+                                <div id="socialFeed">
+                                    <!-- Posts will be populated here -->
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Friend Requests -->
+                        <div class="neural-card">
+                            <div class="social-section">
+                                <div class="social-header">
+                                    <h3 class="social-title">Neural Link Requests</h3>
+                                    <div class="social-count" id="requestsCount">0 Pending</div>
+                                </div>
+                                <div id="friendRequests">
+                                    <!-- Friend requests will be populated here -->
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Friends Network */
+                        <div class="neural-card">
+                            <div class="social-section">
+                                <div class="social-header">
+                                    <h3 class="social-title">Health Network</h3>
+                                    <div class="social-count" id="friendsCount">0 Connections</div>
+                                </div>
+                                <div id="friendsList">
+                                    <!-- Friends list will be populated here -->
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Add Connection -->
+                        <div class="neural-card">
+                            <div class="social-section">
+                                <div class="social-header">
+                                    <h3 class="social-title">Expand Network</h3>
+                                </div>
+                                <div class="form-group">
+                                    <label class="form-label">User ID</label>
+                                    <input type="number" class="form-input" id="friendId" placeholder="Enter neural ID to connect">
+                                </div>
+                                <button class="auth-button" onclick="sendFriendRequest()">
+                                    🔗 Send Neural Link Request
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- About rPPG Panel -->
+                <div class="panel" id="about">
+                    <div class="panel-header">
+                        <h1 class="panel-title">About rPPG Technology</h1>
+                        <p class="panel-subtitle">Understanding Remote Photoplethysmography and its revolutionary impact on contactless health monitoring</p>
+                    </div>
+
+                    <div class="education-section">
+                        <div class="education-header">
+                            <div class="education-icon">🔬</div>
+                            <div class="education-title">What is rPPG?</div>
+                        </div>
+                        <div class="education-content">
+                            <p><strong>Remote Photoplethysmography (rPPG)</strong> is a groundbreaking technology that enables contactless measurement of physiological signals using only a camera. By analyzing subtle color changes in human skin caused by blood circulation, rPPG can accurately detect heart rate, heart rate variability, and even blood oxygen saturation levels.</p>
+
+                            <div class="education-feature">
+                                <div class="feature-icon">📱</div>
+                                <div>
+                                    <strong>Camera-Based Detection</strong><br>
+                                    Uses your device's camera to capture microscopic color variations in facial skin that correspond to your heartbeat.
+                                </div>
+                            </div>
+
+                            <div class="education-feature">
+                                <div class="feature-icon">⚡</div>
+                                <div>
+                                    <strong>Real-Time Processing</strong><br>
+                                    Advanced algorithms process video frames in real-time to extract cardiovascular signals with medical-grade accuracy.
+                                </div>
+                            </div>
+
+                            <div class="education-feature">
+                                <div class="feature-icon">🧠</div>
+                                <div>
+                                    <strong>AI-Enhanced Analysis</strong><br>
+                                    Machine learning models filter noise and enhance signal quality for reliable health measurements.
+                                </div>
+                            </div>
+
+                            <div class="education-feature">
+                                <div class="feature-icon">🌐</div>
+                                <div>
+                                    <strong>Contactless & Convenient</strong><br>
+                                    No wearables or sensors required - just point your camera and get instant health insights.
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="education-section">
+                        <div class="education-header">
+                            <div class="education-icon">📱</div>
+                            <div class="education-title">RayVita App Overview</div>
+                        </div>
+                        <div class="education-content">
+                            <p><strong>RayVita</strong> is an intelligent health application that combines cutting-edge health technology with social interaction. Our platform revolutionizes personal health monitoring through innovative features designed for the modern health-conscious user.</p>
+
+                            <div class="education-feature">
+                                <div class="feature-icon">❤️</div>
+                                <div>
+                                    <strong>Contactless Heart Rate Detection</strong><br>
+                                    Advanced rPPG technology enables real-time heart rate measurement using only your device's camera - no additional hardware required.
+                                </div>
+                            </div>
+
+                            <div class="education-feature">
+                                <div class="feature-icon">👥</div>
+                                <div>
+                                    <strong>Health Social Network</strong><br>
+                                    Share your wellness journey, connect with friends, and participate in a supportive health community that makes fitness fun and sustainable.
+                                </div>
+                            </div>
+
+                            <div class="education-feature">
+                                <div class="feature-icon">🎨</div>
+                                <div>
+                                    <strong>Material You Design</strong><br>
+                                    Beautiful, modern UI experience with Material You design principles, offering both scientific accuracy and exceptional usability.
+                                </div>
+                            </div>
+
+                            <div class="education-feature">
+                                <div class="feature-icon">🔮</div>
+                                <div>
+                                    <strong>Future Computer Vision</strong><br>
+                                    We're continuously developing advanced CV methods to provide even more comprehensive health monitoring capabilities.
+                                </div>
+                            </div>
+
+                            <p style="margin-top: 25px;"><strong>Target Audience:</strong> RayVita is perfect for young, health-conscious users who want to monitor their cardiovascular health with cutting-edge technology while staying connected with a supportive community.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Download App Panel -->
+                <div class="panel" id="download">
+                    <div class="panel-header">
+                        <h1 class="panel-title">Get RayVita App</h1>
+                        <p class="panel-subtitle">Download the RayVita mobile application and start your contactless health monitoring journey today</p>
+                    </div>
+
+                    <div class="download-section">
+                        <div class="download-title">🚀 RayVita Mobile App</div>
+                        <div class="download-subtitle">
+                            Experience the future of health monitoring with our advanced rPPG technology.<br>
+                            Real-time heart rate detection, AI insights, and social health features - all in your pocket.
+                        </div>
+                        <div class="download-buttons">
+                            <a href="#" class="download-btn" onclick="downloadApp('android')">
+                                <div class="download-icon">🤖</div>
+                                <div>
+                                    <div style="font-size: 12px; opacity: 0.8;">Get it on</div>
+                                    <div>Google Play</div>
+                                </div>
+                            </a>
+                            <a href="#" class="download-btn" onclick="downloadApp('ios')">
+                                <div class="download-icon">🍎</div>
+                                <div>
+                                    <div style="font-size: 12px; opacity: 0.8;">Download on the</div>
+                                    <div>App Store</div>
+                                </div>
+                            </a>
+                        </div>
+                    </div>
+
+                    <div class="card-grid">
+                        <div class="neural-card">
+                            <div class="card-header">
+                                <div>
+                                    <h3 class="card-title">App Features</h3>
+                                    <div class="card-subtitle">What makes RayVita special</div>
+                                </div>
+                                <div class="card-icon">✨</div>
+                            </div>
+                            <div class="education-feature">
+                                <div class="feature-icon">📷</div>
+                                <div>
+                                    <strong>Camera-Based Monitoring</strong><br>
+                                    Turn your phone into a health monitoring device
+                                </div>
+                            </div>
+                            <div class="education-feature">
+                                <div class="feature-icon">🤖</div>
+                                <div>
+                                    <strong>AI Health Insights</strong><br>
+                                    Get personalized health recommendations
+                                </div>
+                            </div>
+                            <div class="education-feature">
+                                <div class="feature-icon">👨‍👩‍👧‍👦</div>
+                                <div>
+                                    <strong>Social Health Network</strong><br>
+                                    Share and compare with friends and family
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="neural-card">
+                            <div class="card-header">
+                                <div>
+                                    <h3 class="card-title">System Requirements</h3>
+                                    <div class="card-subtitle">Device compatibility</div>
+                                </div>
+                                <div class="card-icon">⚙️</div>
+                            </div>
+                            <div style="line-height: 1.8; color: var(--text-primary);">
+                                <p><strong>Android:</strong></p>
+                                <ul style="margin-left: 20px; margin-bottom: 15px;">
+                                    <li>Android 8.0 (API level 26) or higher</li>
+                                    <li>Front-facing camera required</li>
+                                    <li>Minimum 3GB RAM recommended</li>
+                                </ul>
+                                <p><strong>iOS:</strong></p>
+                                <ul style="margin-left: 20px;">
+                                    <li>iOS 13.0 or later</li>
+                                    <li>iPhone 7 or newer recommended</li>
+                                    <li>TrueDepth camera for enhanced accuracy</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Contact Panel -->
+                <div class="panel" id="contact">
+                    <div class="panel-header">
+                        <h1 class="panel-title">Contact & Support</h1>
+                        <p class="panel-subtitle">Get in touch with our team for support, partnerships, or general inquiries</p>
+                    </div>
+
+                    <div class="contact-grid">
+                        <div class="contact-info">
+                            <h3 style="color: var(--primary-cyan); margin-bottom: 25px; font-family: 'Orbitron', monospace;">Get In Touch</h3>
+
+                            <div class="contact-item">
+                                <div class="contact-icon">📧</div>
+                                <div>
+                                    <div style="font-weight: 600;">Email Support</div>
+                                    <div style="color: var(--text-secondary);">support@rayvita.com</div>
+                                </div>
+                            </div>
+
+                            <div class="contact-item">
+                                <div class="contact-icon">💼</div>
+                                <div>
+                                    <div style="font-weight: 600;">Business Inquiries</div>
+                                    <div style="color: var(--text-secondary);">business@rayvita.com</div>
+                                </div>
+                            </div>
+
+                            <div class="contact-item">
+                                <div class="contact-icon">🔬</div>
+                                <div>
+                                    <div style="font-weight: 600;">Research Partnerships</div>
+                                    <div style="color: var(--text-secondary);">research@rayvita.com</div>
+                                </div>
+                            </div>
+
+                            <div class="contact-item">
+                                <div class="contact-icon">📱</div>
+                                <div>
+                                    <div style="font-weight: 600;">Technical Support</div>
+                                    <div style="color: var(--text-secondary);">+1 (555) 123-4567</div>
+                                </div>
+                            </div>
+
+                            <div class="contact-item">
+                                <div class="contact-icon">🌐</div>
+                                <div>
+                                    <div style="font-weight: 600;">Website</div>
+                                    <div style="color: var(--text-secondary);">www.rayvita.com</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="map-container">
+                            <div class="map-placeholder">
+                                🗺️ Interactive Map<br>
+                                <span style="font-size: 14px; opacity: 0.7;">RayVita Headquarters Location</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="neural-card" style="margin-top: 40px;">
+                        <div class="card-header">
+                            <div>
+                                <h3 class="card-title">Company Information</h3>
+                                <div class="card-subtitle">About RayVita Technologies</div>
+                            </div>
+                            <div class="card-icon">🏢</div>
+                        </div>
+                        <div style="line-height: 1.8; color: var(--text-primary);">
+                            <p><strong>RayVita Technologies</strong> is a leading innovator in contactless health monitoring solutions. Founded by a team of computer vision researchers and healthcare professionals, we're dedicated to making advanced health monitoring accessible to everyone through cutting-edge rPPG technology.</p>
+
+                            <p style="margin-top: 20px;">Our mission is to democratize health monitoring by eliminating the need for expensive wearables or medical devices, while maintaining the highest standards of accuracy and reliability. We believe that everyone deserves access to their health data, anytime, anywhere.</p>
+
+                            <div style="margin-top: 25px; padding: 20px; background: rgba(0, 255, 255, 0.05); border-radius: 10px; border-left: 3px solid var(--primary-cyan);">
+                                <strong>🎯 Our Vision:</strong> To create a world where health monitoring is as simple as looking at your phone, empowering individuals to take control of their cardiovascular wellness through innovative technology and community support.
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </main>
+        </div>
+    </div>
+
+    <script>
+        // Global variables
+        let currentUser = null;
+        let healthData = [];
+        let socialPosts = [];
+        let charts = {};
+        let isLoggedIn = false;
+        let isRegistering = false;
+
+        // API Configuration
+        const RAYVITA_BASE_URL = 'http://47.96.237.130:5000/api/';
+        const DEEPSEEK_API_KEY = 'sk-0dd7411c6de74f119e9a06be144a89d6';
+        const DEEPSEEK_BASE_URL = 'https://api.deepseek.com/';
+
+        // Initialize the application
+        document.addEventListener('DOMContentLoaded', function() {
+            setupEventListeners();
+            checkAuthStatus();
+            createStarField();
+        });
+
+        function createStarField() {
+            const constellation = document.querySelector('.constellation');
+            for (let i = 0; i < 20; i++) {
+                const star = document.createElement('div');
+                star.className = 'star';
+                star.style.top = Math.random() * 100 + '%';
+                star.style.left = Math.random() * 100 + '%';
+                star.style.animationDelay = Math.random() * 3 + 's';
+                constellation.appendChild(star);
+            }
+        }
+
+        function setupEventListeners() {
+            // Auth form submission
+            document.getElementById('authForm').addEventListener('submit', handleAuth);
+
+            // Toggle between login and register
+            document.getElementById('toggleAuth').addEventListener('click', toggleAuthMode);
+
+            // Navigation
+            document.querySelectorAll('.nav-item').forEach(item => {
+                item.addEventListener('click', function() {
+                    const panel = this.dataset.panel;
+                    switchPanel(panel);
+                });
+            });
+        }
+
+        function checkAuthStatus() {
+            // Check if user is already logged in (localStorage)
+            const savedUser = localStorage.getItem('rayVitaUser');
+            if (savedUser) {
+                currentUser = JSON.parse(savedUser);
+                showMainApp();
+            }
+        }
+
+        async function handleAuth(e) {
+            e.preventDefault();
+
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+            const nickname = document.getElementById('nickname').value;
+
+            try {
+                let response;
+                if (isRegistering) {
+                    response = await fetch(`${RAYVITA_BASE_URL}user/register`, {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                        body: JSON.stringify({ email, password, nickname })
+                    });
+                } else {
+                    response = await fetch(`${RAYVITA_BASE_URL}user/login`, {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                        body: JSON.stringify({ email, password })
+                    });
+                }
+
+                const data = await response.json();
+
+                if (response.ok) {
+                    if (isRegistering) {
+                        showMessage('Neural profile created successfully! Please login to access your dashboard.', 'success');
+                        toggleAuthMode();
+                    } else {
+                        // Get user details
+                        const userResponse = await fetch(`${RAYVITA_BASE_URL}user/${data.user_id}`);
+                        const userData = await userResponse.json();
+
+                        currentUser = userData;
+                        localStorage.setItem('rayVitaUser', JSON.stringify(currentUser));
+                        showMainApp();
+                    }
+                } else {
+                    showMessage(data.msg || 'Authentication failed. Please check your credentials.', 'error');
+                }
+            } catch (error) {
+                console.error('Auth error:', error);
+                showMessage('Network error. Please check your connection and try again.', 'error');
+            }
+        }
+
+        function toggleAuthMode() {
+            isRegistering = !isRegistering;
+            const button = document.getElementById('authButton');
+            const toggle = document.getElementById('toggleAuth');
+            const nicknameGroup = document.getElementById('nicknameGroup');
+
+            if (isRegistering) {
+                button.textContent = 'Create Neural Profile';
+                toggle.innerHTML = 'Already have access? <a href="#">Access Neural Network</a>';
+                nicknameGroup.style.display = 'block';
+            } else {
+                button.textContent = 'Access Neural Network';
+                toggle.innerHTML = 'New to RayVita? <a href="#">Create Neural Profile</a>';
+                nicknameGroup.style.display = 'none';
+            }
+
+            // Clear form
+            document.getElementById('authForm').reset();
+            clearMessages();
+        }
+
+        function showMainApp() {
+            document.getElementById('loginScreen').style.display = 'none';
+            document.getElementById('mainApp').style.display = 'block';
+
+            // Update user info in header
+            document.getElementById('userName').textContent = currentUser.nickname || currentUser.email;
+            document.getElementById('userId').textContent = currentUser.user_id;
+            document.getElementById('userAvatar').textContent = (currentUser.nickname || currentUser.email).charAt(0).toUpperCase();
+
+            // Load initial data
+            loadHealthData();
+            loadSocialData();
+        }
+
+        function logout() {
+            localStorage.removeItem('rayVitaUser');
+            currentUser = null;
+            isLoggedIn = false;
+
+            document.getElementById('mainApp').style.display = 'none';
+            document.getElementById('loginScreen').style.display = 'flex';
+
+            // Clear form
+            document.getElementById('authForm').reset();
+            clearMessages();
+        }
+
+        function switchPanel(panelName) {
+            // Update navigation
+            document.querySelectorAll('.nav-item').forEach(item => {
+                item.classList.remove('active');
+            });
+            document.querySelector(`[data-panel="${panelName}"]`).classList.add('active');
+
+            // Show panel
+            document.querySelectorAll('.panel').forEach(panel => {
+                panel.classList.remove('active');
+            });
+            document.getElementById(panelName).classList.add('active');
+
+            // Load panel-specific data
+            if (panelName === 'social') {
+                loadSocialData();
+            } else if (panelName === 'records') {
+                loadHealthData();
+            }
+        }
+
+        async function loadHealthData() {
+            if (!currentUser) return;
+
+            const loading = document.getElementById('loadingDashboard');
+            if (loading) loading.style.display = 'block';
+
+            try {
+                const response = await fetch(`${RAYVITA_BASE_URL}health_measurements/user/${currentUser.user_id}`);
+                if (response.ok) {
+                    healthData = await response.json();
+                    healthData.sort((a, b) => new Date(b.createdAt || b.timestamp) - new Date(a.createdAt || a.timestamp));
+                    renderDashboard();
+                    renderRecords();
+                } else {
+                    showMessage('Failed to load health data', 'error');
+                }
+            } catch (error) {
+                console.error('Error loading health data:', error);
+                showMessage('Network error loading health data', 'error');
+            } finally {
+                if (loading) loading.style.display = 'none';
+            }
+        }
+
+        function renderDashboard() {
+            if (healthData.length === 0) {
+                document.getElementById('vitalMetrics').innerHTML = '<p style="text-align: center; color: var(--text-secondary);">No health data available. Start by taking measurements with the RayVita app.</p>';
+                return;
+            }
+
+            // Render vital metrics
+            renderVitalMetrics();
+            renderRecentActivity();
+
+            // Render charts
+            setTimeout(() => {
+                renderHeartRateChart();
+                renderHRVChart();
+                renderSpO2Chart();
+                renderQualityChart();
+            }, 100);
+        }
+
+        function renderVitalMetrics() {
+            const latest = healthData[0];
+            const previous = healthData[1] || latest;
+            const container = document.getElementById('vitalMetrics');
+
+            const heartRateTrend = latest.heartRate - (previous.heartRate || 0);
+            const spo2Trend = latest.spo2Result ? latest.spo2Result.spo2 - (previous.spo2Result?.spo2 || 0) : 0;
+            const confidenceTrend = latest.confidence - (previous.confidence || 0);
+
+            container.innerHTML = `
+                <div class="metric-item">
+                    <div class="metric-value">${latest.heartRate ? latest.heartRate.toFixed(1) : '--'}</div>
+                    <div class="metric-label">Heart Rate (BPM)</div>
+                    <div class="metric-trend ${heartRateTrend > 0 ? 'trend-up' : heartRateTrend < 0 ? 'trend-down' : 'trend-stable'}">
+                        ${heartRateTrend > 0 ? '↗' : heartRateTrend < 0 ? '↘' : '→'} ${Math.abs(heartRateTrend).toFixed(1)}
+                    </div>
+                </div>
+                <div class="metric-item">
+                    <div class="metric-value">${latest.spo2Result ? latest.spo2Result.spo2.toFixed(1) : '--'}</div>
+                    <div class="metric-label">SpO2 (%)</div>
+                    <div class="metric-trend ${spo2Trend > 0 ? 'trend-up' : spo2Trend < 0 ? 'trend-down' : 'trend-stable'}">
+                        ${spo2Trend > 0 ? '↗' : spo2Trend < 0 ? '↘' : '→'} ${Math.abs(spo2Trend).toFixed(1)}
+                    </div>
+                </div>
+                <div class="metric-item">
+                    <div class="metric-value">${latest.hrvResult ? latest.hrvResult.rmssd.toFixed(1) : '--'}</div>
+                    <div class="metric-label">RMSSD (ms)</div>
+                    <div class="metric-trend trend-${latest.hrvResult && latest.hrvResult.rmssd > 30 ? 'up' : 'down'}">
+                        ${latest.hrvResult && latest.hrvResult.rmssd > 30 ? 'Good' : 'Monitor'}
+                    </div>
+                </div>
+                <div class="metric-item">
+                    <div class="metric-value">${latest.confidence ? (latest.confidence * 100).toFixed(0) : '--'}</div>
+                    <div class="metric-label">Confidence (%)</div>
+                    <div class="metric-trend ${confidenceTrend > 0 ? 'trend-up' : confidenceTrend < 0 ? 'trend-down' : 'trend-stable'}">
+                        ${confidenceTrend > 0 ? '↗' : confidenceTrend < 0 ? '↘' : '→'} ${Math.abs(confidenceTrend * 100).toFixed(0)}%
+                    </div>
+                </div>
+                <div class="metric-item">
+                    <div class="metric-value">${healthData.length}</div>
+                    <div class="metric-label">Total Sessions</div>
+                    <div class="metric-trend trend-up">
+                        Active
+                    </div>
+                </div>
+                <div class="metric-item">
+                    <div class="metric-value">${latest.hrvResult ? latest.hrvResult.stressIndex.toFixed(2) : '--'}</div>
+                    <div class="metric-label">Stress Index</div>
+                    <div class="metric-trend trend-${latest.hrvResult && latest.hrvResult.stressIndex < 0.5 ? 'up' : 'down'}">
+                        ${latest.hrvResult && latest.hrvResult.stressIndex < 0.5 ? 'Low' : 'Elevated'}
+                    </div>
+                </div>
+            `;
+        }
+
+        function renderRecentActivity() {
+            const container = document.getElementById('recentActivity');
+            const recentData = healthData.slice(0, 5);
+
+            if (recentData.length === 0) {
+                container.innerHTML = '<p style="text-align: center; color: var(--text-secondary);">No recent activity</p>';
+                return;
+            }
+
+            container.innerHTML = recentData.map(item => {
+                const date = new Date(item.createdAt || item.timestamp);
+                const timeAgo = getTimeAgo(date);
+
+                return `
+                    <div style="display: flex; justify-content: between; align-items: center; padding: 15px; background: rgba(0, 255, 255, 0.05); border-radius: 10px; margin-bottom: 10px; border-left: 3px solid var(--primary-cyan);">
+                        <div style="flex: 1;">
+                            <div style="font-weight: 600; color: var(--text-primary); margin-bottom: 5px;">
+                                HR: ${item.heartRate ? item.heartRate.toFixed(1) : 'N/A'} BPM
+                                ${item.spo2Result ? `• SpO2: ${item.spo2Result.spo2.toFixed(1)}%` : ''}
+                            </div>
+                            <div style="font-size: 12px; color: var(--text-secondary);">
+                                ${timeAgo} • Confidence: ${item.confidence ? (item.confidence * 100).toFixed(0) : 'N/A'}%
+                            </div>
+                        </div>
+                        <div style="color: var(--accent-green); font-size: 18px;">💚</div>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        function renderRecords() {
+            // Update statistics
+            if (healthData.length > 0) {
+                document.getElementById('totalSessions').textContent = healthData.length;
+                document.getElementById('avgHeartRate').textContent = (healthData.reduce((sum, item) => sum + (item.heartRate || 0), 0) / healthData.length).toFixed(1);
+                document.getElementById('avgConfidence').textContent = ((healthData.reduce((sum, item) => sum + (item.confidence || 0), 0) / healthData.length) * 100).toFixed(0) + '%';
+                document.getElementById('lastMeasurement').textContent = getTimeAgo(new Date(healthData[0].createdAt || healthData[0].timestamp));
+            }
+
+            // Render records list
+            const container = document.getElementById('recordsList');
+
+            if (healthData.length === 0) {
+                container.innerHTML = '<p style="text-align: center; color: var(--text-secondary); padding: 40px;">No rPPG measurements found. Start using the RayVita app to see your data here.</p>';
+                return;
+            }
+
+            container.innerHTML = healthData.map((item, index) => {
+                const date = new Date(item.createdAt || item.timestamp);
+                const qualityPercent = item.signalQuality ? Math.max(item.signalQuality.illuminationQuality * 100, 10) : 50;
+
+                return `
+                    <div class="record-item">
+                        <div class="record-header">
+                            <div class="record-id">Session ${String(index + 1).padStart(3, '0')}</div>
+                            <div class="record-time">${date.toLocaleString()}</div>
+                        </div>
+
+                        <div class="record-metrics">
+                            <div class="record-metric">
+                                <div class="record-metric-value">${item.heartRate ? item.heartRate.toFixed(1) : 'N/A'}</div>
+                                <div class="record-metric-label">Heart Rate</div>
+                            </div>
+                            <div class="record-metric">
+                                <div class="record-metric-value">${item.spo2Result ? item.spo2Result.spo2.toFixed(1) : 'N/A'}</div>
+                                <div class="record-metric-label">SpO2 (%)</div>
+                            </div>
+                            <div class="record-metric">
+                                <div class="record-metric-value">${item.hrvResult ? item.hrvResult.rmssd.toFixed(1) : 'N/A'}</div>
+                                <div class="record-metric-label">RMSSD</div>
+                            </div>
+                            <div class="record-metric">
+                                <div class="record-metric-value">${item.confidence ? (item.confidence * 100).toFixed(0) : 'N/A'}</div>
+                                <div class="record-metric-label">Confidence</div>
+                            </div>
+                            <div class="record-metric">
+                                <div class="record-metric-value">${item.frameCount || 'N/A'}</div>
+                                <div class="record-metric-label">Frames</div>
+                            </div>
+                            <div class="record-metric">
+                                <div class="record-metric-value">${item.processingTimeMs || 'N/A'}</div>
+                                <div class="record-metric-label">Process (ms)</div>
+                            </div>
+                        </div>
+
+                        <div class="record-quality">
+                            <div class="quality-label">Signal Quality:</div>
+                            <div class="quality-bar">
+                                <div class="quality-fill" style="width: ${qualityPercent}%"></div>
+                            </div>
+                            <div class="quality-label">${qualityPercent.toFixed(0)}%</div>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        function renderHeartRateChart() {
+            const ctx = document.getElementById('heartRateChart')?.getContext('2d');
+            if (!ctx || healthData.length === 0) return;
+
+            if (charts.heartRate) {
+                charts.heartRate.destroy();
+            }
+
+            const gradient = ctx.createLinearGradient(0, 0, 0, 300);
+            gradient.addColorStop(0, 'rgba(0, 255, 255, 0.4)');
+            gradient.addColorStop(1, 'rgba(0, 255, 255, 0.05)');
+
+            charts.heartRate = new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: healthData.map(item => new Date(item.createdAt || item.timestamp).toLocaleTimeString()),
+                    datasets: [{
+                        label: 'Heart Rate (BPM)',
+                        data: healthData.map(item => item.heartRate),
+                        borderColor: '#00ffff',
+                        backgroundColor: gradient,
+                        borderWidth: 3,
+                        fill: true,
+                        tension: 0.4,
+                        pointBackgroundColor: '#00ffff',
+                        pointBorderColor: '#ffffff',
+                        pointRadius: 5,
+                        pointHoverRadius: 8
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            labels: {
+                                color: '#ffffff',
+                                font: { family: 'Inter', size: 14 }
+                            }
+                        }
+                    },
+                    scales: {
+                        x: {
+                            ticks: {
+                                color: '#ffffff',
+                                font: { family: 'Inter' }
+                            },
+                            grid: { color: 'rgba(255, 255, 255, 0.1)' }
+                        },
+                        y: {
+                            ticks: {
+                                color: '#ffffff',
+                                font: { family: 'Inter' }
+                            },
+                            grid: { color: 'rgba(255, 255, 255, 0.1)' }
+                        }
+                    },
+                    animation: {
+                        duration: 2000,
+                        easing: 'easeInOutQuart'
+                    }
+                }
+            });
+        }
+
+        function renderHRVChart() {
+            const ctx = document.getElementById('hrvChart')?.getContext('2d');
+            if (!ctx) return;
+
+            if (charts.hrv) {
+                charts.hrv.destroy();
+            }
+
+            const validData = healthData.filter(item => item.hrvResult);
+            if (validData.length === 0) {
+                ctx.fillStyle = '#ffffff';
+                ctx.font = '16px Inter';
+                ctx.textAlign = 'center';
+                ctx.fillText('No HRV data available', ctx.canvas.width / 2, ctx.canvas.height / 2);
+                return;
+            }
+
+            charts.hrv = new Chart(ctx, {
+                type: 'radar',
+                data: {
+                    labels: ['RMSSD', 'SDNN', 'pNN50', 'Stress Index'],
+                    datasets: validData.slice(0, 3).map((item, index) => ({
+                        label: `Session ${index + 1}`,
+                        data: [
+                            Math.min(item.hrvResult.rmssd / 10, 100),
+                            Math.min(item.hrvResult.sdnn / 5, 100),
+                            item.hrvResult.pnn50 || 0,
+                            Math.max(0, (1 - item.hrvResult.stressIndex) * 100)
+                        ],
+                        borderColor: ['#00ffff', '#0080ff', '#8000ff'][index],
+                        backgroundColor: ['rgba(0, 255, 255, 0.1)', 'rgba(0, 128, 255, 0.1)', 'rgba(128, 0, 255, 0.1)'][index],
+                        borderWidth: 3,
+                        pointBackgroundColor: ['#00ffff', '#0080ff', '#8000ff'][index],
+                        pointBorderColor: '#ffffff',
+                        pointRadius: 4
+                    }))
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            labels: {
+                                color: '#ffffff',
+                                font: { family: 'Inter', size: 14 }
+                            }
+                        }
+                    },
+                    scales: {
+                        r: {
+                            angleLines: { color: 'rgba(255, 255, 255, 0.2)' },
+                            grid: { color: 'rgba(255, 255, 255, 0.2)' },
+                            pointLabels: {
+                                color: '#ffffff',
+                                font: { family: 'Inter', size: 12 }
+                            },
+                            ticks: {
+                                color: '#ffffff',
+                                backdropColor: 'transparent'
+                            },
+                            beginAtZero: true,
+                            max: 100
+                        }
+                    },
+                    animation: {
+                        duration: 2500,
+                        easing: 'easeInOutElastic'
+                    }
+                }
+            });
+        }
+
+        function renderSpO2Chart() {
+            const ctx = document.getElementById('spo2Chart')?.getContext('2d');
+            if (!ctx) return;
+
+            if (charts.spo2) {
+                charts.spo2.destroy();
+            }
+
+            const validData = healthData.filter(item => item.spo2Result);
+            if (validData.length === 0) {
+                ctx.fillStyle = '#ffffff';
+                ctx.font = '16px Inter';
+                ctx.textAlign = 'center';
+                ctx.fillText('No SpO2 data available', ctx.canvas.width / 2, ctx.canvas.height / 2);
+                return;
+            }
+
+            const gradient = ctx.createLinearGradient(0, 0, 0, 300);
+            gradient.addColorStop(0, 'rgba(0, 255, 136, 0.3)');
+            gradient.addColorStop(1, 'rgba(0, 255, 136, 0.05)');
+
+            charts.spo2 = new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: validData.map(item => new Date(item.createdAt || item.timestamp).toLocaleTimeString()),
+                    datasets: [{
+                        label: 'SpO2 (%)',
+                        data: validData.map(item => item.spo2Result.spo2),
+                        borderColor: '#00ff88',
+                        backgroundColor: gradient,
+                        borderWidth: 3,
+                        fill: true,
+                        tension: 0.4,
+                        pointBackgroundColor: '#00ff88',
+                        pointBorderColor: '#ffffff',
+                        pointRadius: 4
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            labels: {
+                                color: '#ffffff',
+                                font: { family: 'Inter', size: 14 }
+                            }
+                        }
+                    },
+                    scales: {
+                        x: {
+                            ticks: {
+                                color: '#ffffff',
+                                font: { family: 'Inter' }
+                            },
+                            grid: { color: 'rgba(255, 255, 255, 0.1)' }
+                        },
+                        y: {
+                            ticks: {
+                                color: '#ffffff',
+                                font: { family: 'Inter' }
+                            },
+                            grid: { color: 'rgba(255, 255, 255, 0.1)' },
+                            min: 95,
+                            max: 100
+                        }
+                    }
+                }
+            });
+        }
+
+        function renderQualityChart() {
+            const ctx = document.getElementById('qualityChart')?.getContext('2d');
+            if (!ctx || healthData.length === 0) return;
+
+            if (charts.quality) {
+                charts.quality.destroy();
+            }
+
+            charts.quality = new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: healthData.slice(0, 10).map((_, index) => `S${index + 1}`),
+                    datasets: [{
+                        label: 'Illumination Quality (%)',
+                        data: healthData.slice(0, 10).map(item => item.signalQuality ? item.signalQuality.illuminationQuality * 100 : 50),
+                        backgroundColor: 'rgba(0, 255, 255, 0.7)',
+                        borderColor: '#00ffff',
+                        borderWidth: 2,
+                        borderRadius: 6
+                    }, {
+                        label: 'Signal Clarity (%)',
+                        data: healthData.slice(0, 10).map(item => item.signalQuality ? (1 - (item.signalQuality.motionArtifact || 0)) * 100 : 80),
+                        backgroundColor: 'rgba(255, 136, 0, 0.7)',
+                        borderColor: '#ff8800',
+                        borderWidth: 2,
+                        borderRadius: 6
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            labels: {
+                                color: '#ffffff',
+                                font: { family: 'Inter', size: 14 }
+                            }
+                        }
+                    },
+                    scales: {
+                        x: {
+                            ticks: {
+                                color: '#ffffff',
+                                font: { family: 'Inter' }
+                            },
+                            grid: { color: 'rgba(255, 255, 255, 0.1)' }
+                        },
+                        y: {
+                            ticks: {
+                                color: '#ffffff',
+                                font: { family: 'Inter' }
+                            },
+                            grid: { color: 'rgba(255, 255, 255, 0.1)' },
+                            beginAtZero: true,
+                            max: 100
+                        }
+                    }
+                }
+            });
+        }
+
+        async function performAIAnalysis() {
+            if (!currentUser || healthData.length === 0) {
+                showMessage('No health data available for AI analysis. Please ensure you have rPPG measurements.', 'error');
+                return;
+            }
+
+            const container = document.getElementById('aiAnalysisContent');
+            container.innerHTML = `
+                <div class="ai-analysis">
+                    <div class="ai-header">
+                        <div class="ai-icon">🧠</div>
+                        <div>
+                            <div class="ai-title">DeepSeek Neural Analysis</div>
+                            <div class="ai-status">Processing biometric data...</div>
+                        </div>
+                    </div>
+                    <div class="loading">
+                        <div class="spinner"></div>
+                        <div>AI analyzing your health patterns...</div>
+                    </div>
+                </div>
+            `;
+
+            try {
+                // Prepare comprehensive health data summary for AI analysis
+                const latestData = healthData.slice(0, 10);
+                const summary = {
+                    userProfile: {
+                        userId: currentUser.user_id,
+                        totalSessions: healthData.length,
+                        analysisDate: new Date().toISOString()
+                    },
+                    recentMeasurements: latestData.map(item => ({
+                        timestamp: item.createdAt || item.timestamp,
+                        heartRate: item.heartRate,
+                        spo2: item.spo2Result?.spo2,
+                        hrvMetrics: item.hrvResult ? {
+                            rmssd: item.hrvResult.rmssd,
+                            sdnn: item.hrvResult.sdnn,
+                            pnn50: item.hrvResult.pnn50,
+                            stressIndex: item.hrvResult.stressIndex
+                        } : null,
+                        confidence: item.confidence,
+                        signalQuality: item.signalQuality
+                    })),
+                    statisticalSummary: {
+                        heartRate: {
+                            average: healthData.reduce((sum, item) => sum + (item.heartRate || 0), 0) / healthData.length,
+                            min: Math.min(...healthData.map(item => item.heartRate || 0)),
+                            max: Math.max(...healthData.map(item => item.heartRate || 0))
+                        },
+                        spo2: healthData.filter(item => item.spo2Result).length > 0 ? {
+                            average: healthData.filter(item => item.spo2Result).reduce((sum, item) => sum + item.spo2Result.spo2, 0) / healthData.filter(item => item.spo2Result).length,
+                            min: Math.min(...healthData.filter(item => item.spo2Result).map(item => item.spo2Result.spo2)),
+                            max: Math.max(...healthData.filter(item => item.spo2Result).map(item => item.spo2Result.spo2))
+                        } : null,
+                        hrv: healthData.filter(item => item.hrvResult).length > 0 ? {
+                            averageRMSSD: healthData.filter(item => item.hrvResult).reduce((sum, item) => sum + item.hrvResult.rmssd, 0) / healthData.filter(item => item.hrvResult).length,
+                            averageStress: healthData.filter(item => item.hrvResult).reduce((sum, item) => sum + item.hrvResult.stressIndex, 0) / healthData.filter(item => item.hrvResult).length
+                        } : null
+                    }
+                };
+
+                const prompt = `As an advanced health analytics AI specialized in cardiovascular monitoring and rPPG technology, analyze this comprehensive biometric dataset:
+
+${JSON.stringify(summary, null, 2)}
+
+Please provide a detailed health analysis including:
+
+🔍 **ASSESSMENT OVERVIEW**
+- Overall cardiovascular health status
+- Key trends and patterns identified
+- Data quality and reliability assessment
+
+⚠️ **HEALTH INSIGHTS**
+- Heart rate variability analysis
+- Stress level indicators
+- Blood oxygenation patterns
+- Any concerning trends or anomalies
+
+💡 **RECOMMENDATIONS**
+- Personalized lifestyle improvements
+- Monitoring frequency suggestions
+- Areas requiring medical attention (if any)
+- Wellness optimization strategies
+
+📊 **TECHNICAL ANALYSIS**
+- rPPG signal quality evaluation
+- Measurement accuracy assessment
+- Suggested improvements for data collection
+
+🎯 **ACTION ITEMS**
+- Immediate steps for health improvement
+- Long-term monitoring goals
+- When to consult healthcare providers
+
+Format your response with clear sections and actionable insights. Focus on being informative, supportive, and scientifically accurate while remaining accessible to the user.`;
+
+                const response = await fetch(`${DEEPSEEK_BASE_URL}v1/chat/completions`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${DEEPSEEK_API_KEY}`
+                    },
+                    body: JSON.stringify({
+                        model: 'deepseek-chat',
+                        messages: [
+                            {
+                                role: 'system',
+                                content: 'You are a specialized AI health analyst with expertise in cardiovascular monitoring, rPPG technology, and biometric data interpretation. Provide comprehensive, accurate, and actionable health insights.'
+                            },
+                            {
+                                role: 'user',
+                                content: prompt
+                            }
+                        ],
+                        stream: false,
+                        temperature: 0.7,
+                        max_tokens: 2000
+                    })
+                });
+
+                if (response.ok) {
+                    const data = await response.json();
+                    const analysis = data.choices[0].message.content;
+
+                    // Parse and format the AI response
+                    const formattedAnalysis = formatAIAnalysis(analysis);
+
+                    container.innerHTML = `
+                        <div class="ai-analysis">
+                            <div class="ai-header">
+                                <div class="ai-icon">🧠</div>
+                                <div>
+                                    <div class="ai-title">DeepSeek Neural Analysis Complete</div>
+                                    <div class="ai-status">Analysis based on ${healthData.length} measurements</div>
+                                </div>
+                            </div>
+                            <div class="ai-content">
+                                ${formattedAnalysis}
+                            </div>
+                        </div>
+                    `;
+                } else {
+                    throw new Error(`AI analysis failed: ${response.status}`);
+                }
+            } catch (error) {
+                console.error('AI analysis error:', error);
+                container.innerHTML = `
+                    <div class="ai-analysis">
+                        <div class="ai-header">
+                            <div class="ai-icon">❌</div>
+                            <div>
+                                <div class="ai-title">Analysis Unavailable</div>
+                                <div class="ai-status">Service temporarily unavailable</div>
+                            </div>
+                        </div>
+                        <div class="ai-content">
+                            <div class="ai-insight alert">
+                                <strong>Service Notice:</strong> AI analysis is currently unavailable. This may be due to network connectivity or service limitations. Please try again later.
+                            </div>
+                            <div class="ai-insight">
+                                <strong>Alternative:</strong> You can still view your health metrics in the Dashboard and Records sections for manual analysis of your rPPG measurements.
+                            </div>
+                        </div>
+                    </div>
+                `;
+            }
+        }
+
+        function formatAIAnalysis(analysis) {
+            // Convert markdown-style formatting to HTML
+            let formatted = analysis
+                .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
+                .replace(/\*(.*?)\*/g, '<em>$1</em>')
+                .replace(/#{1,6}\s*(.*?)$/gm, '<h4 style="color: var(--primary-cyan); margin: 20px 0 10px 0; font-family: \'Orbitron\', monospace;">$1</h4>')
+                .replace(/- (.*?)$/gm, '<div class="ai-insight">• $1</div>')
+                .replace(/(\d+\.)\s*(.*?)$/gm, '<div class="ai-insight"><strong>$1</strong> $2</div>');
+
+            // Add emojis and structure
+            formatted = formatted
+                .replace(/🔍\s*\*\*ASSESSMENT OVERVIEW\*\*/g, '<div class="ai-insight"><strong>🔍 ASSESSMENT OVERVIEW</strong></div>')
+                .replace(/⚠️\s*\*\*HEALTH INSIGHTS\*\*/g, '<div class="ai-insight warning"><strong>⚠️ HEALTH INSIGHTS</strong></div>')
+                .replace(/💡\s*\*\*RECOMMENDATIONS\*\*/g, '<div class="ai-insight"><strong>💡 RECOMMENDATIONS</strong></div>')
+                .replace(/📊\s*\*\*TECHNICAL ANALYSIS\*\*/g, '<div class="ai-insight"><strong>📊 TECHNICAL ANALYSIS</strong></div>')
+                .replace(/🎯\s*\*\*ACTION ITEMS\*\*/g, '<div class="ai-insight alert"><strong>🎯 ACTION ITEMS</strong></div>');
+
+            return formatted;
+        }
+
+        async function loadSocialData() {
+            if (!currentUser) return;
+
+            try {
+                // Load friend requests
+                const requestsResponse = await fetch(`${RAYVITA_BASE_URL}friend/incoming?user_id=${currentUser.user_id}`);
+                if (requestsResponse.ok) {
+                    const requestsData = await requestsResponse.json();
+                    renderFriendRequests(requestsData.requests || []);
+                }
+
+                // Load friends list
+                const friendsResponse = await fetch(`${RAYVITA_BASE_URL}friend/list?user_id=${currentUser.user_id}`);
+                if (friendsResponse.ok) {
+                    const friendsData = await friendsResponse.json();
+                    renderFriendsList(friendsData);
+                }
+
+                // Load social feed
+                const feedResponse = await fetch(`${RAYVITA_BASE_URL}post/feed?user_id=${currentUser.user_id}&scope=all`);
+                if (feedResponse.ok) {
+                    const feedData = await feedResponse.json();
+                    socialPosts = feedData;
+                    renderSocialFeed(socialPosts);
+                }
+            } catch (error) {
+                console.error('Error loading social data:', error);
+            }
+        }
+
+        function renderFriendRequests(requests) {
+            const container = document.getElementById('friendRequests');
+            document.getElementById('requestsCount').textContent = `${requests.length} Pending`;
+
+            if (requests.length === 0) {
+                container.innerHTML = '<p style="text-align: center; color: var(--text-secondary); padding: 20px;">No pending neural link requests</p>';
+                return;
+            }
+
+            container.innerHTML = requests.map(request => `
+                <div class="friend-item">
+                    <div class="friend-info">
+                        <div class="post-avatar">${(request.from_user_nickname || 'U').charAt(0).toUpperCase()}</div>
+                        <div style="flex: 1;">
+                            <div class="post-author">${request.from_user_nickname || `User ${request.from_user_id}`}</div>
+                            <div class="post-time">Neural ID: ${request.from_user_id} • ${new Date(request.created_at).toLocaleDateString()}</div>
+                        </div>
+                    </div>
+                    <div class="friend-actions">
+                        <button class="action-btn btn-accept" onclick="handleFriendRequest(${request.request_id}, 'accept')">
+                            ✅ Accept
+                        </button>
+                        <button class="action-btn btn-reject" onclick="handleFriendRequest(${request.request_id}, 'reject')">
+                            ❌ Decline
+                        </button>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function renderFriendsList(friends) {
+            const container = document.getElementById('friendsList');
+            document.getElementById('friendsCount').textContent = `${friends.length} Connections`;
+
+            if (friends.length === 0) {
+                container.innerHTML = '<p style="text-align: center; color: var(--text-secondary); padding: 20px;">No neural network connections yet<br><span style="font-size: 12px;">Start building your health community!</span></p>';
+                return;
+            }
+
+            container.innerHTML = friends.map(friend => `
+                <div class="friend-item">
+                    <div class="friend-info">
+                        <div class="post-avatar">${(friend.nickname || 'U').charAt(0).toUpperCase()}</div>
+                        <div style="flex: 1;">
+                            <div class="post-author">${friend.nickname || `User ${friend.user_id}`}</div>
+                            <div class="post-time">Neural ID: ${friend.user_id} • <span style="color: var(--accent-green);">Connected</span></div>
+                        </div>
+                    </div>
+                    <div style="color: var(--accent-green); font-size: 20px;">🔗</div>
+                </div>
+            `).join('');
+        }
+
+        function renderSocialFeed(posts) {
+            const container = document.getElementById('socialFeed');
+            document.getElementById('postsCount').textContent = `${posts.length} Posts`;
+
+            if (posts.length === 0) {
+                container.innerHTML = `
+                    <div style="text-align: center; color: var(--text-secondary); padding: 40px; background: rgba(0, 255, 255, 0.05); border-radius: 15px; border: 1px dashed rgba(0, 255, 255, 0.3);">
+                        <div style="font-size: 48px; margin-bottom: 15px;">💬</div>
+                        <div style="font-size: 16px; font-weight: 600; margin-bottom: 10px;">No posts yet</div>
+                        <div style="font-size: 14px;">Be the first to share your health journey!</div>
+                    </div>
+                `;
+                return;
+            }
+
+            container.innerHTML = posts.map(post => `
+                <div class="post-item">
+                    <div class="post-content">
+                        <div class="post-header">
+                            <div class="post-avatar">U</div>
+                            <div class="post-meta">
+                                <div class="post-author">User ${post.user_id}</div>
+                                <div class="post-time">${new Date(post.post_dt).toLocaleString()}</div>
+                            </div>
+                        </div>
+                        <div class="post-text">${post.text_content || 'Shared a health update'}</div>
+                        <div class="post-actions">
+                            <button class="action-btn btn-like ${post.user_liked ? 'liked' : ''}" onclick="toggleLike(${post.post_id})">
+                                💖 ${post.like_count || 0}
+                            </button>
+                            <button class="action-btn btn-comment">
+                                💬 ${post.comment_count || 0}
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        async function createPost() {
+            const textContent = document.getElementById('postText').value.trim();
+            if (!textContent || !currentUser) return;
+
+            try {
+                const response = await fetch(`${RAYVITA_BASE_URL}post/create`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        user_id: currentUser.user_id,
+                        text_content: textContent,
+                        post_type: 'health_update'
+                    })
+                });
+
+                if (response.ok) {
+                    document.getElementById('postText').value = '';
+                    showMessage('Health update shared successfully! 🎉', 'success');
+                    loadSocialData(); // Refresh the feed
+                } else {
+                    const data = await response.json();
+                    showMessage(data.msg || 'Failed to share post', 'error');
+                }
+            } catch (error) {
+                console.error('Error creating post:', error);
+                showMessage('Network error. Please try again.', 'error');
+            }
+        }
+
+        async function toggleLike(postId) {
+            if (!currentUser) return;
+
+            try {
+                const response = await fetch(`${RAYVITA_BASE_URL}post/${postId}/like`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        user_id: currentUser.user_id
+                    })
+                });
+
+                if (response.ok) {
+                    loadSocialData(); // Refresh to update like counts
+                }
+            } catch (error) {
+                console.error('Error toggling like:', error);
+            }
+        }
+
+        async function sendFriendRequest() {
+            const friendId = document.getElementById('friendId').value.trim();
+            if (!friendId || !currentUser) {
+                showMessage('Please enter a valid Neural ID', 'error');
+                return;
+            }
+
+            try {
+                const response = await fetch(`${RAYVITA_BASE_URL}friend/request`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        user_id: currentUser.user_id,
+                        friend_id: parseInt(friendId)
+                    })
+                });
+
+                const data = await response.json();
+
+                if (response.ok) {
+                    showMessage('Neural link request sent successfully! 🔗', 'success');
+                    document.getElementById('friendId').value = '';
+                } else {
+                    showMessage(data.msg || 'Failed to send neural link request', 'error');
+                }
+            } catch (error) {
+                console.error('Error sending friend request:', error);
+                showMessage('Network error. Please try again.', 'error');
+            }
+        }
+
+        async function handleFriendRequest(requestId, action) {
+            try {
+                const response = await fetch(`${RAYVITA_BASE_URL}friend/request/${requestId}`, {
+                    method: 'PUT',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ action })
+                });
+
+                if (response.ok) {
+                    showMessage(`Neural link request ${action}ed successfully! ${action === 'accept' ? '🎉' : ''}`, 'success');
+                    loadSocialData(); // Refresh the data
+                } else {
+                    const data = await response.json();
+                    showMessage(data.msg || 'Action failed', 'error');
+                }
+            } catch (error) {
+                console.error('Error handling friend request:', error);
+                showMessage('Network error. Please try again.', 'error');
+            }
+        }
+
+        function downloadApp(platform) {
+            const messages = {
+                android: 'Redirecting to Google Play Store...',
+                ios: 'Redirecting to Apple App Store...'
+            };
+
+            showMessage(messages[platform], 'success');
+
+            // In a real implementation, these would be actual store URLs
+            const urls = {
+                android: 'https://play.google.com/store/apps/details?id=com.rayvita.app',
+                ios: 'https://apps.apple.com/app/rayvita/id123456789'
+            };
+
+            // Simulate app store redirect
+            setTimeout(() => {
+                showMessage(`${platform === 'android' ? 'Android' : 'iOS'} app will be available soon! 📱`, 'success');
+            }, 1500);
+        }
+
+        function getTimeAgo(date) {
+            const now = new Date();
+            const diffMs = now - date;
+            const diffMins = Math.floor(diffMs / 60000);
+            const diffHours = Math.floor(diffMins / 60);
+            const diffDays = Math.floor(diffHours / 24);
+
+            if (diffDays > 0) return `${diffDays}d ago`;
+            if (diffHours > 0) return `${diffHours}h ago`;
+            if (diffMins > 0) return `${diffMins}m ago`;
+            return 'Just now';
+        }
+
+        function showMessage(message, type) {
+            const container = document.getElementById('authMessage');
+            const icon = type === 'success' ? '✅' : type === 'error' ? '❌' : 'ℹ️';
+
+            container.innerHTML = `<div class="${type}-message">${icon} ${message}</div>`;
+
+            setTimeout(() => {
+                clearMessages();
+            }, 5000);
+        }
+
+        function clearMessages() {
+            const container = document.getElementById('authMessage');
+            if (container) {
+                container.innerHTML = '';
+            }
+        }
+
+        // Auto-refresh health data every 5 minutes
+        setInterval(() => {
+            if (currentUser && isLoggedIn) {
+                loadHealthData();
+            }
+        }, 5 * 60 * 1000);
+
+        // Auto-refresh social data every 2 minutes
+        setInterval(() => {
+            if (currentUser && isLoggedIn) {
+                loadSocialData();
+            }
+        }, 2 * 60 * 1000);
+    </script>
+</body>
+</html>

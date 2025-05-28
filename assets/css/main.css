@@ -3,6 +3,7 @@
     min-height: 100vh;
 }
 
+
 .navbar {
     background: var(--card-bg);
     padding: 20px 40px;
@@ -148,16 +149,25 @@
     font-size: 18px;
 }
 
+
 .content {
     flex: 1;
-    padding: 40px;
+    padding: 20px;
     overflow-y: auto;
     background: var(--background);
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
 }
 
 .page {
     display: none;
+    width: 100%;
+    /*max-width: 1600px;*/
+    margin: 0 auto;
+    justify-content: center;
     animation: fadeInUp 0.5s ease-out;
+    background: var(--background);
 }
 
 .page.active {
@@ -806,4 +816,10 @@
     .page-title {
         font-size: 28px;
     }
+
+    #postsContainer, #challengesContainer {
+    width: 100%;
+    max-width: 1600px; /* 与 .container 一致 */
+    margin: 0 auto; /* 水平居中 */
+}
 }
