@@ -1,368 +1,743 @@
 <!DOCTYPE html>
-<html lang="zh-CN">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>RayVita Synapse</title>
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="assets/css/style.css">
+    <title>RayVita-Synapse | Advanced Neural Health Analytics Platform</title>
+
+    <!-- External Dependencies -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.9.1/chart.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.css"/>
+
+    <!-- CSS Files -->
+    <link rel="stylesheet" href="assets/css/base.css">
+    <link rel="stylesheet" href="assets/css/layout.css">
+    <link rel="stylesheet" href="assets/css/components.css">
+    <link rel="stylesheet" href="assets/css/panels.css">
+    <link rel="stylesheet" href="assets/css/animations.css">
+    <link rel="stylesheet" href="assets/css/responsive.css">
 </head>
 <body>
-    <!-- 动画背景 -->
-    <div class="animated-bg"></div>
-    <div class="particles" id="particles"></div>
-
-    <!-- 登录注册界面 -->
-    <div id="authContainer" class="auth-container">
-        <div class="auth-box">
-            <div class="auth-header">
-                <div class="logo">
-                    <i class="fas fa-heart-pulse"></i>
-                </div>
-                <h1>RayVita</h1>
-                <p id="authSubtitle">智能健康管理平台，开启健康新生活</p>
-            </div>
-
-            <div id="authForm">
-                <div class="form-group">
-                    <label><i class="fas fa-envelope"></i> 邮箱地址</label>
-                    <input type="email" id="email" placeholder="请输入您的邮箱地址" required>
-                </div>
-
-                <div class="form-group" id="nicknameGroup" style="display: none;">
-                    <label><i class="fas fa-user-circle"></i> 用户昵称</label>
-                    <input type="text" id="nickname" placeholder="请输入您的昵称">
-                </div>
-
-                <div class="form-group">
-                    <label><i class="fas fa-lock"></i> 登录密码</label>
-                    <div class="password-toggle">
-                        <input type="password" id="password" placeholder="请输入您的密码" required>
-                        <button type="button" class="toggle-btn" onclick="togglePassword('password')">
-                            <i class="fas fa-eye"></i>
-                        </button>
-                    </div>
-                </div>
-
-                <div class="form-group" id="confirmPasswordGroup" style="display: none;">
-                    <label><i class="fas fa-shield-alt"></i> 确认密码</label>
-                    <div class="password-toggle">
-                        <input type="password" id="confirmPassword" placeholder="请再次输入密码确认">
-                        <button type="button" class="toggle-btn" onclick="togglePassword('confirmPassword')">
-                            <i class="fas fa-eye"></i>
-                        </button>
-                    </div>
-                </div>
-
-                <button class="btn" id="authBtn" onclick="handleAuth()">
-                    <i class="fas fa-sign-in-alt"></i> 立即登录
-                </button>
-
-                <div class="switch-auth" id="switchAuth" onclick="switchAuthMode()">
-                    <i class="fas fa-user-plus"></i> 还没有账户？立即注册
-                </div>
-            </div>
-        </div>
+    <!-- Background Effects -->
+    <div class="neural-background">
+        <div class="neural-nodes"></div>
+    </div>
+    <div class="grid-overlay"></div>
+    <div class="constellation">
+        <div class="star"></div>
+        <div class="star"></div>
+        <div class="star"></div>
+        <div class="star"></div>
+        <div class="star"></div>
     </div>
 
-    <!-- 主界面 -->
-    <div id="mainContainer" class="main-container">
-        <!-- 导航栏 -->
-        <nav class="navbar">
-            <div class="logo">
-                <i class="fas fa-heart-pulse"></i>
-                <span>RayVita</span>
-                <span class="ai-indicator pulse">
-                    <i class="fas fa-brain"></i> AI智能
-                </span>
-            </div>
-            <div class="user-info">
-                <div class="user-avatar" id="userAvatar">R</div>
-                <span class="user-name" id="userName">智能用户</span>
-                <button class="logout-btn" onclick="logout()">
-                    <i class="fas fa-sign-out-alt"></i> 安全退出
-                </button>
-            </div>
-        </nav>
+    <div class="app-container">
+        <!-- Login Screen -->
+        <div class="login-screen" id="loginScreen">
+            <div class="login-container">
+                <div class="logo-section">
+                    <div class="logo-icon">R</div>
+                    <div class="app-title">RayVita-Synapse</div>
+                    <div class="app-subtitle">Advanced Neural Health Analytics Platform<br>Contactless Health Monitoring & AI Insights</div>
+                </div>
 
-        <!-- 主布局 -->
-        <div class="app-layout">
-            <!-- 侧边栏 -->
-            <div class="sidebar">
-                <div class="sidebar-item active" onclick="showPage('dashboard')">
-                    <i class="fas fa-chart-line"></i>
-                    <span>智能仪表板</span>
-                </div>
-                <div class="sidebar-item" onclick="showPage('health')">
-                    <i class="fas fa-heartbeat"></i>
-                    <span>健康数据中心</span>
-                </div>
-                <div class="sidebar-item" onclick="showPage('ai-analysis')">
-                    <i class="fas fa-brain"></i>
-                    <span>AI健康分析</span>
-                </div>
-                <div class="sidebar-item" onclick="showPage('social')">
-                    <i class="fas fa-users-medical"></i>
-                    <span>健康社区</span>
-                </div>
-                <div class="sidebar-item" onclick="showPage('challenges')">
-                    <i class="fas fa-trophy"></i>
-                    <span>智能挑战</span>
-                </div>
-                <div class="sidebar-item" onclick="showPage('friends')">
-                    <i class="fas fa-user-friends"></i>
-                    <span>健康伙伴</span>
-                </div>
-                <div class="sidebar-item" onclick="showPage('notifications')">
-                    <i class="fas fa-bell"></i>
-                    <span>消息中心</span>
-                </div>
-            </div>
+                <form id="authForm">
+                    <div class="form-group">
+                        <label class="form-label">Email Address</label>
+                        <input type="email" class="form-input" id="email" required placeholder="your.email@domain.com">
+                    </div>
 
-            <!-- 内容区域 -->
-            <div class="content">
-                <!-- 智能仪表板页面 -->
-                <div id="dashboard" class="page active">
-                    <div class="page-header">
+                    <div class="form-group">
+                        <label class="form-label">Password</label>
+                        <input type="password" class="form-input" id="password" required placeholder="Enter your password">
+                    </div>
+
+                    <div class="form-group" id="nicknameGroup" style="display: none;">
+                        <label class="form-label">Display Name</label>
+                        <input type="text" class="form-input" id="nickname" placeholder="Your display name">
+                    </div>
+
+                    <button type="submit" class="auth-button" id="authButton">
+                        Access Neural Network
+                    </button>
+
+                    <div class="auth-toggle">
+                        New to RayVita? <a href="#" id="toggleAuth">Create Neural Profile</a>
+                    </div>
+                </form>
+
+                <div id="authMessage"></div>
+            </div>
+        </div>
+
+        <!-- Main Application -->
+        <div class="main-app" id="mainApp">
+            <!-- Header -->
+            <header class="app-header">
+                <div class="header-content">
+                    <div class="header-logo">
+                        <div class="header-logo-icon">R</div>
                         <div>
-                            <h1 class="page-title">智能健康仪表板</h1>
-                            <p class="page-subtitle">AI驱动的个性化健康洞察，实时监控您的身体状态</p>
-                        </div>
-                        <div class="ai-indicator pulse">
-                            <i class="fas fa-robot"></i> AI实时分析中
+                            <div class="header-title">RayVita-Synapse</div>
+                            <div style="font-size: 14px; color: var(--text-secondary); letter-spacing: 1px;">Neural Health Analytics</div>
                         </div>
                     </div>
 
-                    <div class="stat-cards" id="statCards">
-                        <div class="stat-card">
-                            <div class="feature-badge">实时</div>
-                            <div class="stat-icon" style="background: linear-gradient(135deg, #ff6b6b, #ee5a52);">
-                                <i class="fas fa-heartbeat"></i>
-                            </div>
-                            <div class="stat-value" id="avgHeartRate">-- BPM</div>
-                            <div class="stat-label">平均心率</div>
+                    <nav class="header-nav">
+                        <div class="nav-item active" data-panel="dashboard">Dashboard</div>
+                        <div class="nav-item" data-panel="records">rPPG Records</div>
+                        <div class="nav-item" data-panel="ai-chat">AI Assistant</div>
+                        <div class="nav-item" data-panel="analysis">AI Analysis</div>
+                        <div class="nav-item" data-panel="social">Social Network</div>
+                        <div class="nav-item" data-panel="about">About rPPG</div>
+                        <div class="nav-item" data-panel="download">Get App</div>
+                        <div class="nav-item" data-panel="contact">Contact</div>
+                    </nav>
+
+                    <div class="header-user">
+                        <div class="user-avatar" id="userAvatar">U</div>
+                        <div>
+                            <div id="userName" style="font-weight: 600;">User</div>
+                            <div style="font-size: 13px; color: var(--text-secondary);">Neural ID: <span id="userId">--</span></div>
                         </div>
-                        <div class="stat-card">
-                            <div class="feature-badge">AI分析</div>
-                            <div class="stat-icon" style="background: linear-gradient(135deg, #4ecdc4, #45b7aa);">
-                                <i class="fas fa-wave-square"></i>
+                        <button class="logout-btn" onclick="authManager.logout()">Logout</button>
+                    </div>
+                </div>
+            </header>
+
+            <!-- Content Area -->
+            <main class="content-area">
+                <!-- Dashboard Panel -->
+                <div class="panel active" id="dashboard">
+                    <div class="panel-header">
+                        <h1 class="panel-title">Neural Health Dashboard</h1>
+                        <p class="panel-subtitle">Real-time biometric analysis powered by advanced rPPG technology and AI-driven health insights</p>
+                    </div>
+
+                    <div class="card-grid">
+                        <!-- Enhanced Vital Signs Card -->
+                        <div class="neural-card featured">
+                            <div class="card-header">
+                                <div>
+                                    <h3 class="card-title">Vital Matrix</h3>
+                                    <div class="card-subtitle">Live biometric monitoring</div>
+                                </div>
+                                <div class="card-icon">💗</div>
                             </div>
-                            <div class="stat-value" id="avgHRV">-- ms</div>
-                            <div class="stat-label">心率变异性</div>
+                            <div class="metrics-grid" id="vitalMetrics">
+                                <!-- Metrics will be populated here -->
+                            </div>
                         </div>
-                        <div class="stat-card">
-                            <div class="feature-badge">智能</div>
-                            <div class="stat-icon" style="background: linear-gradient(135deg, #45b7d1, #3498db);">
-                                <i class="fas fa-trophy"></i>
+
+                        <!-- Heart Rate Chart -->
+                        <div class="neural-card">
+                            <div class="card-header">
+                                <div>
+                                    <h3 class="card-title">Cardiac Rhythm Analysis</h3>
+                                    <div class="card-subtitle">Heart rate variability trends</div>
+                                </div>
+                                <div class="card-icon">📈</div>
                             </div>
-                            <div class="stat-value" id="activeChallenges">0</div>
-                            <div class="stat-label">活跃挑战</div>
+                            <div class="chart-container">
+                                <canvas id="heartRateChart"></canvas>
+                            </div>
                         </div>
-                        <div class="stat-card">
-                            <div class="feature-badge">社交</div>
-                            <div class="stat-icon" style="background: linear-gradient(135deg, #f093fb, #f5576c);">
-                                <i class="fas fa-users"></i>
+
+                        <!-- HRV Analysis -->
+                        <div class="neural-card">
+                            <div class="card-header">
+                                <div>
+                                    <h3 class="card-title">HRV Neural Pattern</h3>
+                                    <div class="card-subtitle">Autonomic nervous system analysis</div>
+                                </div>
+                                <div class="card-icon">🧠</div>
                             </div>
-                            <div class="stat-value" id="friendCount">0</div>
-                            <div class="stat-label">健康伙伴</div>
+                            <div class="chart-container">
+                                <canvas id="hrvChart"></canvas>
+                            </div>
+                        </div>
+
+                        <!-- SpO2 Monitoring -->
+                        <div class="neural-card">
+                            <div class="card-header">
+                                <div>
+                                    <h3 class="card-title">Oxygen Saturation</h3>
+                                    <div class="card-subtitle">Blood oxygenation levels</div>
+                                </div>
+                                <div class="card-icon">🫁</div>
+                            </div>
+                            <div class="chart-container">
+                                <canvas id="spo2Chart"></canvas>
+                            </div>
+                        </div>
+
+                        <!-- Signal Quality Assessment -->
+                        <div class="neural-card">
+                            <div class="card-header">
+                                <div>
+                                    <h3 class="card-title">Signal Quality Matrix</h3>
+                                    <div class="card-subtitle">rPPG signal analysis metrics</div>
+                                </div>
+                                <div class="card-icon">📡</div>
+                            </div>
+                            <div class="chart-container">
+                                <canvas id="qualityChart"></canvas>
+                            </div>
+                        </div>
+
+                        <!-- Recent Activity -->
+                        <div class="neural-card">
+                            <div class="card-header">
+                                <div>
+                                    <h3 class="card-title">Recent Neural Activity</h3>
+                                    <div class="card-subtitle">Latest health measurements</div>
+                                </div>
+                                <div class="card-icon">⚡</div>
+                            </div>
+                            <div id="recentActivity">
+                                <!-- Recent measurements will be populated here -->
+                            </div>
                         </div>
                     </div>
 
-                    <!-- AI健康建议卡片 -->
-                    <div class="card">
-                        <div style="display: flex; align-items: center; gap: 15px; margin-bottom: 25px;">
-                            <div class="stat-icon" style="background: linear-gradient(135deg, #667eea, #764ba2); width: 50px; height: 50px;">
-                                <i class="fas fa-brain"></i>
-                            </div>
+                    <div id="loadingDashboard" class="loading" style="display: none;">
+                        <div class="spinner"></div>
+                        <div>Synchronizing neural data streams...</div>
+                    </div>
+                </div>
+
+                <!-- Enhanced rPPG Records Panel -->
+                <div class="panel" id="records">
+                    <div class="panel-header">
+                        <h1 class="panel-title">rPPG Detection Records</h1>
+                        <p class="panel-subtitle">Comprehensive analysis of your photoplethysmography measurements and signal quality assessments</p>
+                    </div>
+
+                    <div class="neural-card">
+                        <div class="card-header">
                             <div>
-                                <h3 style="color: var(--text-primary); font-size: 20px;">AI智能健康建议</h3>
-                                <p style="color: var(--text-secondary); margin: 0;">基于您的数据分析生成个性化建议</p>
+                                <h3 class="card-title">Measurement History</h3>
+                                <div class="card-subtitle">Detailed rPPG session records</div>
+                            </div>
+                            <div class="card-icon">📊</div>
+                        </div>
+
+                        <div class="metrics-grid" style="margin-bottom: 40px;">
+                            <div class="metric-item">
+                                <div class="metric-value" id="totalSessions">--</div>
+                                <div class="metric-label">Total Sessions</div>
+                            </div>
+                            <div class="metric-item">
+                                <div class="metric-value" id="avgHeartRate">--</div>
+                                <div class="metric-label">Average HR</div>
+                            </div>
+                            <div class="metric-item">
+                                <div class="metric-value" id="avgConfidence">--</div>
+                                <div class="metric-label">Avg Confidence</div>
+                            </div>
+                            <div class="metric-item">
+                                <div class="metric-value" id="lastMeasurement">--</div>
+                                <div class="metric-label">Last Measurement</div>
                             </div>
                         </div>
-                        <div id="aiSuggestions">
-                            <div class="loading">
-                                <i class="fas fa-brain"></i>
-                                <p>AI正在分析您的健康数据...</p>
-                            </div>
+
+                        <div id="recordsList">
+                            <!-- Records will be populated here -->
                         </div>
                     </div>
                 </div>
 
-                <!-- 健康数据中心页面 -->
-                <div id="health" class="page">
-                    <div class="page-header">
-                        <div>
-                            <h1 class="page-title">健康数据中心</h1>
-                            <p class="page-subtitle">全方位健康监测，智能数据分析与管理</p>
-                        </div>
-                        <button class="btn-primary" onclick="addHealthData()">
-                            <i class="fas fa-plus-circle"></i> 添加健康数据
-                        </button>
+                <!-- AI Chat Panel -->
+                <div class="panel" id="ai-chat">
+                    <div class="panel-header">
+                        <h1 class="panel-title">AI Health Assistant</h1>
+                        <p class="panel-subtitle">Engage in intelligent conversations with AI for personalized health insights and detailed data analysis</p>
                     </div>
 
-                    <div class="card">
-                        <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 25px;">
-                            <h3 style="color: var(--text-primary); font-size: 22px;">最新健康记录</h3>
-                            <div class="ai-indicator">
-                                <i class="fas fa-chart-line"></i> 智能分析
-                            </div>
-                        </div>
-                        <div class="data-list" id="healthDataList">
-                            <div class="loading">
-                                <i class="fas fa-heartbeat"></i>
-                                <p>正在加载您的健康数据...</p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- AI健康分析页面 -->
-                <div id="ai-analysis" class="page">
-                    <div class="page-header">
-                        <div>
-                            <h1 class="page-title">AI健康分析</h1>
-                            <p class="page-subtitle">人工智能深度分析，提供专业健康洞察</p>
-                        </div>
-                        <div class="ai-indicator pulse">
-                            <i class="fas fa-robot"></i> AI引擎运行中
-                        </div>
-                    </div>
-
-                    <div class="stat-cards">
-                        <div class="card">
-                            <div class="feature-badge">NEW</div>
-                            <div style="display: flex; align-items: center; gap: 15px; margin-bottom: 20px;">
-                                <div class="stat-icon" style="background: linear-gradient(135deg, #667eea, #764ba2); width: 50px; height: 50px;">
-                                    <i class="fas fa-brain"></i>
+                    <div class="ai-chat-container">
+                        <div class="chat-interface">
+                            <div class="chat-header">
+                                <div style="font-size: 28px;">🤖</div>
+                                <div>
+                                    <div style="font-weight: 700; font-size: 20px;">RayVita AI Health Assistant</div>
+                                    <div style="font-size: 16px; opacity: 0.8;">Online • Powered by DeepSeek</div>
                                 </div>
-                                <h3 style="color: var(--text-primary); font-size: 20px;">智能健康评分</h3>
                             </div>
-                            <div class="stat-value" style="color: var(--primary-color);">85/100</div>
-                            <p style="color: var(--text-secondary); margin-top: 10px;">您的整体健康状况良好，继续保持！</p>
-                        </div>
 
-                        <div class="card">
-                            <div class="feature-badge">AI</div>
-                            <div style="display: flex; align-items: center; gap: 15px; margin-bottom: 20px;">
-                                <div class="stat-icon" style="background: linear-gradient(135deg, #10b981, #34d399); width: 50px; height: 50px;">
-                                    <i class="fas fa-chart-pie"></i>
+                            <div class="chat-messages" id="chatMessages">
+                                <div class="message ai">
+                                    <div>👋 Welcome! I'm your RayVita AI Health Assistant. I can help you with:</div>
+                                    <div style="margin-top: 15px;">
+                                        • 💓 Analyzing your heart rate and HRV data<br>
+                                        • 📊 Interpreting specific measurement records<br>
+                                        • 💡 Providing personalized health recommendations<br>
+                                        • 🏥 Assessing your cardiovascular health status
+                                    </div>
+                                    <div style="margin-top: 15px; color: var(--accent-green);">Please select a record from the right panel for detailed analysis, or ask me any health-related questions!</div>
                                 </div>
-                                <h3 style="color: var(--text-primary); font-size: 20px;">风险预测</h3>
                             </div>
-                            <div class="stat-value" style="color: #10b981;">低风险</div>
-                            <p style="color: var(--text-secondary); margin-top: 10px;">基于AI模型分析，您的健康风险较低</p>
-                        </div>
-                    </div>
 
-                    <div class="card">
-                        <h3 style="color: var(--text-primary); font-size: 22px; margin-bottom: 25px;">AI深度分析报告</h3>
-                        <div class="empty-state">
-                            <i class="fas fa-chart-line"></i>
-                            <h3>AI正在生成您的专属健康报告</h3>
-                            <p>我们的人工智能正在分析您的健康数据，为您生成个性化的深度健康报告</p>
+                            <div class="chat-input-area">
+                                <textarea
+                                    class="chat-input"
+                                    id="chatInput"
+                                    placeholder="Ask about your health metrics or select a record for analysis..."
+                                    rows="1"
+                                ></textarea>
+                                <button class="chat-send-btn" onclick="aiChat.sendMessage()">
+                                    ➤
+                                </button>
+                            </div>
                         </div>
-                    </div>
-                </div>
 
-                <!-- 健康社区页面 -->
-                <div id="social" class="page">
-                    <div class="page-header">
-                        <div>
-                            <h1 class="page-title">健康社区</h1>
-                            <p class="page-subtitle">分享健康生活，与健康伙伴互动交流</p>
-                        </div>
-                        <button class="btn-primary" onclick="createPost()">
-                            <i class="fas fa-pen-fancy"></i> 发表健康动态
-                        </button>
-                    </div>
-
-                    <div id="postsContainer">
-                        <div class="loading">
-                            <i class="fas fa-comments"></i>
-                            <p>正在加载社区动态...</p>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- 智能挑战页面 -->
-                <div id="challenges" class="page">
-                    <div class="page-header">
-                        <div>
-                            <h1 class="page-title">智能挑战系统</h1>
-                            <p class="page-subtitle">AI定制化健康挑战，科学提升身体素质</p>
-                        </div>
-                        <button class="btn-primary" onclick="createChallenge()">
-                            <i class="fas fa-rocket"></i> 创建智能挑战
-                        </button>
-                    </div>
-
-                    <div class="stat-cards" id="challengesContainer">
-                        <div class="loading">
-                            <i class="fas fa-trophy"></i>
-                            <p>正在加载您的挑战...</p>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- 健康伙伴页面 -->
-                <div id="friends" class="page">
-                    <div class="page-header">
-                        <div>
-                            <h1 class="page-title">健康伙伴管理</h1>
-                            <p class="page-subtitle">建立健康社交网络，共同实现健康目标</p>
-                        </div>
-                        <button class="btn-primary" onclick="addFriend()">
-                            <i class="fas fa-user-plus"></i> 添加健康伙伴
-                        </button>
-                    </div>
-
-                    <div class="card">
-                        <h3 style="margin-bottom: 25px; color: var(--text-primary); font-size: 22px;">我的健康伙伴</h3>
-                        <div class="stat-cards" id="friendsList">
-                            <div class="loading">
-                                <i class="fas fa-users"></i>
-                                <p>正在加载您的健康伙伴...</p>
+                        <div class="record-selector">
+                            <h4 style="color: var(--primary-cyan); margin-bottom: 20px; font-family: var(--font-display);">Select Record for Analysis</h4>
+                            <div id="chatRecordsList">
+                                <!-- Records for chat selection will be populated here -->
                             </div>
                         </div>
                     </div>
                 </div>
 
-                <!-- 消息中心页面 -->
-                <div id="notifications" class="page">
-                    <div class="page-header">
-                        <div>
-                            <h1 class="page-title">智能消息中心</h1>
-                            <p class="page-subtitle">实时接收健康提醒和系统通知</p>
-                        </div>
-                        <button class="btn-primary" onclick="markAllRead()">
-                            <i class="fas fa-check-double"></i> 全部标记已读
-                        </button>
+                <!-- Enhanced AI Analysis Panel -->
+                <div class="panel" id="analysis">
+                    <div class="panel-header">
+                        <h1 class="panel-title">AI Neural Analysis</h1>
+                        <p class="panel-subtitle">Advanced health insights powered by DeepSeek AI and machine learning algorithms</p>
                     </div>
 
-                    <div class="card">
-                        <div id="notificationsList">
-                            <div class="loading">
-                                <i class="fas fa-bell"></i>
-                                <p>正在加载您的消息...</p>
+                    <div class="neural-card">
+                        <div class="card-header">
+                            <div>
+                                <h3 class="card-title">Health Analysis Engine</h3>
+                                <div class="card-subtitle">AI-powered biometric insights</div>
+                            </div>
+                            <div class="card-icon">🤖</div>
+                        </div>
+
+                        <button class="auth-button" onclick="performAIAnalysis()" style="margin-bottom: 40px;">
+                            🧠 Generate Advanced AI Health Analysis
+                        </button>
+
+                        <div id="aiAnalysisContent">
+                            <div class="ai-analysis" style="border: 2px dashed rgba(0, 255, 255, 0.3); text-align: center;">
+                                <div class="ai-icon" style="margin: 0 auto 25px;">🔬</div>
+                                <h4 style="color: var(--primary-cyan); margin-bottom: 20px; font-family: var(--font-display);">Ready for Neural Analysis</h4>
+                                <p style="color: var(--text-secondary);">Click the button above to generate comprehensive AI insights based on your rPPG measurements, heart rate variability patterns, and physiological indicators.</p>
                             </div>
                         </div>
                     </div>
+
+<!--                    &lt;!&ndash; 导出功能 &ndash;&gt;-->
+<!--                    <div style="margin-top: 30px; text-align: center; display: none;" id="exportSection">-->
+<!--            <h5 style="color: var(&#45;&#45;text-primary); margin-bottom: 20px;">Export Analysis Report</h5>-->
+<!--            <div style="display: flex; gap: 15px; justify-content: center; flex-wrap: wrap;">-->
+<!--                <button class="export-btn" onclick="aiAnalysis.exportAnalysis('txt')" style="padding: 10px 20px; background: rgba(0, 255, 255, 0.1); border: 1px solid rgba(0, 255, 255, 0.3); border-radius: 10px; color: var(&#45;&#45;primary-cyan); cursor: pointer; font-size: 13px; font-weight: 600; display: flex; align-items: center; gap: 8px;">-->
+<!--                    📄 Export as Text-->
+<!--                </button>-->
+<!--                <button class="export-btn" onclick="aiAnalysis.exportAnalysis('json')" style="padding: 10px 20px; background: rgba(128, 0, 255, 0.1); border: 1px solid rgba(128, 0, 255, 0.3); border-radius: 10px; color: var(&#45;&#45;primary-purple); cursor: pointer; font-size: 13px; font-weight: 600; display: flex; align-items: center; gap: 8px;">-->
+<!--                    📋 Export as JSON-->
+<!--                </button>-->
+<!--            </div>-->
+<!--                     </div>-->
+
+                </div>
+
+                <!-- Enhanced Social Panel -->
+                <div class="panel" id="social">
+                    <div class="panel-header">
+                        <h1 class="panel-title">Health Social Network</h1>
+                        <p class="panel-subtitle">Connect with the health community, share insights, and stay motivated on your wellness journey</p>
+                    </div>
+
+                    <div class="social-container">
+                        <div class="social-feed-section">
+                            <!-- Post Composer -->
+                            <div class="post-composer">
+                                <div class="composer-header">
+                                    <div class="post-avatar" id="composerAvatar">U</div>
+                                    <div style="flex: 1;">
+                                        <textarea
+                                            class="form-textarea"
+                                            id="postText"
+                                            placeholder="Share your health insights or today's wellness journey..."
+                                            rows="3"
+                                        ></textarea>
+                                    </div>
+                                </div>
+
+                                <div class="composer-tools">
+                                    <div class="composer-tool">
+                                        <span>📊</span>
+                                        <span>Health Data</span>
+                                    </div>
+                                    <div class="composer-tool">
+                                        <span>📷</span>
+                                        <span>Photo</span>
+                                    </div>
+                                    <div class="composer-tool">
+                                        <span>📍</span>
+                                        <span>Location</span>
+                                    </div>
+                                    <div class="composer-tool">
+                                        <span>😊</span>
+                                        <span>Mood</span>
+                                    </div>
+                                </div>
+
+                                <button class="action-button" onclick="socialFeatures.createPost()">
+                                    📝 Share Health Update
+                                </button>
+                            </div>
+
+                            <!-- Social Feed -->
+                            <div id="socialFeed">
+                                <!-- Posts will be populated here -->
+                            </div>
+                        </div>
+
+                        <div class="social-sidebar">
+                            <!-- Trending Topics -->
+                            <div class="trending-section">
+                                <h4 style="color: var(--primary-cyan); margin-bottom: 25px; font-family: var(--font-display);">🔥 Trending Health Topics</h4>
+                                <div class="trending-item"># Heart Rate Health</div>
+                                <div class="trending-item"># rPPG Technology</div>
+                                <div class="trending-item"># Healthy Lifestyle</div>
+                                <div class="trending-item"># Stress Management</div>
+                                <div class="trending-item"># Fitness Tracking</div>
+                                <div class="trending-item"># Sleep Quality</div>
+                            </div>
+
+                            <!-- Personal Stats -->
+                            <div class="trending-section">
+                                <h4 style="color: var(--primary-cyan); margin-bottom: 25px; font-family: var(--font-display);">📈 My Health Stats</h4>
+                                <div style="display: flex; justify-content: space-between; margin-bottom: 20px;">
+                                    <span>Today's Measurements:</span>
+                                    <span style="color: var(--accent-green);" id="todayMeasurements">0</span>
+                                </div>
+                                <div style="display: flex; justify-content: space-between; margin-bottom: 20px;">
+                                    <span>Weekly Avg HR:</span>
+                                    <span style="color: var(--primary-cyan);" id="weeklyAvgHR">--</span>
+                                </div>
+                                <div style="display: flex; justify-content: space-between; margin-bottom: 20px;">
+                                    <span>Health Score:</span>
+                                    <span style="color: var(--accent-gold);" id="healthScore">--</span>
+                                </div>
+                            </div>
+
+                            <!-- Friends Network -->
+                            <div class="trending-section">
+                                <h4 style="color: var(--primary-cyan); margin-bottom: 25px; font-family: var(--font-display);">👥 Health Network</h4>
+                                <div id="friendsNetwork">
+                                    <!-- Friends will be populated here -->
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- About rPPG Panel -->
+                <div class="panel" id="about">
+                    <div class="panel-header">
+                        <h1 class="panel-title">About rPPG Technology</h1>
+                        <p class="panel-subtitle">Understanding Remote Photoplethysmography and its revolutionary impact on contactless health monitoring</p>
+                    </div>
+
+                    <div class="education-section">
+                        <div class="education-header">
+                            <div class="education-icon">🔬</div>
+                            <div class="education-title">What is rPPG?</div>
+                        </div>
+                        <div class="education-content">
+                            <p><strong>Remote Photoplethysmography (rPPG)</strong> is a groundbreaking technology that enables contactless measurement of physiological signals using only a camera. By analyzing subtle color changes in human skin caused by blood circulation, rPPG can accurately detect heart rate, heart rate variability, and even blood oxygen saturation levels.</p>
+
+                            <div class="education-feature">
+                                <div class="feature-icon">📱</div>
+                                <div>
+                                    <strong>Camera-Based Detection</strong><br>
+                                    Uses your device's camera to capture microscopic color variations in facial skin that correspond to your heartbeat.
+                                </div>
+                            </div>
+
+                            <div class="education-feature">
+                                <div class="feature-icon">⚡</div>
+                                <div>
+                                    <strong>Real-Time Processing</strong><br>
+                                    Advanced algorithms process video frames in real-time to extract cardiovascular signals with medical-grade accuracy.
+                                </div>
+                            </div>
+
+                            <div class="education-feature">
+                                <div class="feature-icon">🧠</div>
+                                <div>
+                                    <strong>AI-Enhanced Analysis</strong><br>
+                                    Machine learning models filter noise and enhance signal quality for reliable health measurements.
+                                </div>
+                            </div>
+
+                            <div class="education-feature">
+                                <div class="feature-icon">🌐</div>
+                                <div>
+                                    <strong>Contactless & Convenient</strong><br>
+                                    No wearables or sensors required - just point your camera and get instant health insights.
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="education-section">
+                        <div class="education-header">
+                            <div class="education-icon">📱</div>
+                            <div class="education-title">RayVita App Overview</div>
+                        </div>
+                        <div class="education-content">
+                            <p><strong>RayVita</strong> is an intelligent health application that combines cutting-edge health technology with social interaction. Our core features include contactless heart rate detection using rPPG technology and a health social system to enhance user engagement and sustainability in health management.</p>
+
+                            <div class="education-feature">
+                                <div class="feature-icon">❤️</div>
+                                <div>
+                                    <strong>Contactless Heart Rate Detection</strong><br>
+                                    Advanced rPPG technology enables real-time heart rate measurement using only your device's camera - no additional hardware required.
+                                </div>
+                            </div>
+
+                            <div class="education-feature">
+                                <div class="feature-icon">👥</div>
+                                <div>
+                                    <strong>Health Social Network</strong><br>
+                                    Share your wellness journey, connect with friends, and participate in a supportive health community that makes fitness fun and sustainable.
+                                </div>
+                            </div>
+
+                            <div class="education-feature">
+                                <div class="feature-icon">🎨</div>
+                                <div>
+                                    <strong>Material You Design</strong><br>
+                                    Beautiful, modern UI experience with Material You design principles, combining scientific accuracy with exceptional usability.
+                                </div>
+                            </div>
+
+                            <div class="education-feature">
+                                <div class="feature-icon">🔮</div>
+                                <div>
+                                    <strong>Future Computer Vision</strong><br>
+                                    We're continuously developing advanced CV methods to provide even more comprehensive health monitoring capabilities.
+                                </div>
+                            </div>
+
+                            <p style="margin-top: 30px;"><strong>Target Audience:</strong> RayVita is perfect for young, health-conscious users who want to monitor their cardiovascular health with cutting-edge technology while staying connected with a supportive community.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Download App Panel -->
+                <div class="panel" id="download">
+                    <div class="panel-header">
+                        <h1 class="panel-title">Get RayVita App</h1>
+                        <p class="panel-subtitle">Download the RayVita mobile application and start your contactless health monitoring journey today</p>
+                    </div>
+
+                    <div class="download-section">
+                        <div class="download-title">🚀 RayVita Mobile App</div>
+                        <div class="download-subtitle">
+                            Experience the future of health monitoring with our advanced rPPG technology.<br>
+                            Real-time heart rate detection, AI insights, and social health features - all in your pocket.
+                        </div>
+                        <a href="#" class="download-btn" onclick="downloadManager.downloadAPK()">
+                            <div class="download-icon">📱</div>
+                            <div>
+                                <div style="font-size: 16px; opacity: 0.8;">Direct Download</div>
+                                <div>RayVita.apk</div>
+                            </div>
+                        </a>
+                    </div>
+
+                    <div class="card-grid">
+                        <div class="neural-card">
+                            <div class="card-header">
+                                <div>
+                                    <h3 class="card-title">App Features</h3>
+                                    <div class="card-subtitle">What makes RayVita special</div>
+                                </div>
+                                <div class="card-icon">✨</div>
+                            </div>
+                            <div class="education-feature">
+                                <div class="feature-icon">📷</div>
+                                <div>
+                                    <strong>Camera-Based Monitoring</strong><br>
+                                    Turn your phone into a health monitoring device
+                                </div>
+                            </div>
+                            <div class="education-feature">
+                                <div class="feature-icon">🤖</div>
+                                <div>
+                                    <strong>AI Health Insights</strong><br>
+                                    Get personalized health recommendations
+                                </div>
+                            </div>
+                            <div class="education-feature">
+                                <div class="feature-icon">👨‍👩‍👧‍👦</div>
+                                <div>
+                                    <strong>Social Health Network</strong><br>
+                                    Share and compare with friends and family
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="neural-card">
+                            <div class="card-header">
+                                <div>
+                                    <h3 class="card-title">System Requirements</h3>
+                                    <div class="card-subtitle">Device compatibility</div>
+                                </div>
+                                <div class="card-icon">⚙️</div>
+                            </div>
+                            <div style="line-height: 1.8; color: var(--text-primary);">
+                                <p><strong>Android Devices:</strong></p>
+                                <ul style="margin-left: 25px; margin-bottom: 20px;">
+                                    <li>Android 8.0 (API level 26) or higher</li>
+                                    <li>Front-facing camera required</li>
+                                    <li>Minimum 3GB RAM recommended</li>
+                                    <li>ARMv7 or ARM64 architecture support</li>
+                                </ul>
+                                <p><strong>Recommended Configuration:</strong></p>
+                                <ul style="margin-left: 25px;">
+                                    <li>Android 11.0 or newer</li>
+                                    <li>4GB or more RAM</li>
+                                    <li>Good front camera quality</li>
+                                    <li>Stable internet connection</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Contact Panel -->
+                <div class="panel" id="contact">
+                    <div class="panel-header">
+                        <h1 class="panel-title">Contact & Support</h1>
+                        <p class="panel-subtitle">Get in touch with our team for support, partnerships, or general inquiries</p>
+                    </div>
+
+                    <div class="contact-grid">
+                        <div class="contact-info">
+                            <h3 style="color: var(--primary-cyan); margin-bottom: 30px; font-family: var(--font-display);">Get In Touch</h3>
+
+                            <div class="contact-item">
+                                <div class="contact-icon">📧</div>
+                                <div>
+                                    <div style="font-weight: 600;">Email Support</div>
+                                    <div style="color: var(--text-secondary);">support@rayvita.com</div>
+                                </div>
+                            </div>
+
+                            <div class="contact-item">
+                                <div class="contact-icon">💼</div>
+                                <div>
+                                    <div style="font-weight: 600;">Business Inquiries</div>
+                                    <div style="color: var(--text-secondary);">business@rayvita.com</div>
+                                </div>
+                            </div>
+
+                            <div class="contact-item">
+                                <div class="contact-icon">🔬</div>
+                                <div>
+                                    <div style="font-weight: 600;">Research Partnerships</div>
+                                    <div style="color: var(--text-secondary);">research@rayvita.com</div>
+                                </div>
+                            </div>
+
+                            <div class="contact-item">
+                                <div class="contact-icon">📱</div>
+                                <div>
+                                    <div style="font-weight: 600;">Technical Support</div>
+                                    <div style="color: var(--text-secondary);">+86 400-123-4567</div>
+                                </div>
+                            </div>
+
+                            <div class="contact-item">
+                                <div class="contact-icon">🏢</div>
+                                <div>
+                                    <div style="font-weight: 600;">Company Address</div>
+                                    <div style="color: var(--text-secondary);">Zhongguancun Science Park, Haidian District, Beijing</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="map-container">
+                            <div id="map"></div>
+                        </div>
+                    </div>
+
+                    <div class="neural-card" style="margin-top: 50px;">
+                        <div class="card-header">
+                            <div>
+                                <h3 class="card-title">Company Information</h3>
+                                <div class="card-subtitle">About RayVita Technologies</div>
+                            </div>
+                            <div class="card-icon">🏢</div>
+                        </div>
+                        <div style="line-height: 1.8; color: var(--text-primary);">
+                            <p><strong>RayVita Technologies</strong> is a leading innovator in contactless health monitoring solutions. Founded by a team of computer vision researchers and healthcare professionals, we're dedicated to making advanced health monitoring accessible to everyone through cutting-edge rPPG technology.</p>
+
+                            <p style="margin-top: 25px;">Our mission is to democratize health monitoring by eliminating the need for expensive wearables or medical devices, while maintaining the highest standards of accuracy and reliability. We believe that everyone deserves access to their health data, anytime, anywhere.</p>
+
+                            <div style="margin-top: 30px; padding: 25px; background: rgba(0, 255, 255, 0.05); border-radius: 15px; border-left: 4px solid var(--primary-cyan);">
+                                <strong>🎯 Our Vision:</strong> To create a world where health monitoring is as simple as looking at your phone, empowering individuals to take control of their cardiovascular wellness through innovative technology and community support.
+                            </div>
+
+                            <div style="margin-top: 25px; padding: 25px; background: rgba(0, 255, 136, 0.05); border-radius: 15px; border-left: 4px solid var(--accent-green);">
+                                <strong>🌟 RayVita-Synapse:</strong> As the web-based lightweight version of the RayVita series, positioned as a cross-platform health data visualization and interaction hub, providing users with comprehensive health management experiences.
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </main>
+        </div>
+
+        <!-- Advanced rPPG Record Viewer Modal -->
+        <div class="record-viewer-modal" id="recordViewerModal">
+            <div class="record-viewer-content">
+                <div class="record-viewer-header">
+                    <div>
+                        <h3 style="color: var(--primary-cyan); font-family: var(--font-display); font-size: 28px;">Detailed rPPG Record Analysis</h3>
+                        <div style="color: var(--text-secondary); margin-top: 8px;" id="recordViewerSubtitle">Session details and waveform analysis</div>
+                    </div>
+                    <div class="close-viewer" onclick="recordViewer.closeModal()">✕</div>
+                </div>
+
+                <div id="recordViewerDetails">
+                    <!-- Record details will be populated here -->
+                </div>
+
+                <div class="waveform-controls">
+                    <div class="waveform-btn active" data-type="rppg">rPPG Signal</div>
+                    <div class="waveform-btn" data-type="heartrate">Heart Rate</div>
+                    <div class="waveform-btn" data-type="quality">Signal Quality</div>
+                </div>
+
+                <div class="waveform-container">
+                    <canvas id="waveformChart"></canvas>
+                </div>
+
+                <div id="recordAnalysis" style="margin-top: 40px;">
+                    <!-- Analysis will be populated here -->
                 </div>
             </div>
         </div>
     </div>
 
-    <!-- 提示消息 -->
-    <div id="toast" class="toast"></div>
-
-    <script src="assets/js/main.js"></script>
+    <!-- JavaScript Modules -->
+    <script src="assets/js/config.js"></script>
+    <script src="assets/js/utils.js"></script>
     <script src="assets/js/auth.js"></script>
-    <script src="assets/js/dashboard.js"></script>
-    <script src="assets/js/health.js"></script>
-    <script src="assets/js/ai.js"></script>
-    <script src="assets/js/social.js"></script>
-    <script src="assets/js/challenge.js"></script>
-    <script src="assets/js/friends.js"></script>
-    <script src="assets/js/notification.js"></script>
+    <script src="assets/js/dataManager.js"></script>
+    <script src="assets/js/chartRenderer.js"></script>
+    <script src="assets/js/aiChat.js"></script>
+    <script src="assets/js/socialFeatures.js"></script>
+    <script src="assets/js/recordViewer.js"></script>
+    <script src="assets/js/app.js"></script>
+    <script src="assets/js/aiAnalysis.js"></script>
 </body>
 </html>
