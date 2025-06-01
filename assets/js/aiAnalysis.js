@@ -1,6 +1,7 @@
 // RayVita-Synapse AI Analysis Module
 // 处理AI健康分析功能和DeepSeek API集成
 
+
 class AiAnalysisManager {
     constructor() {
         this.config = window.RayVitaConfig;
@@ -418,15 +419,15 @@ Format your response with clear sections and actionable insights. Focus on being
         const message = error.message.toLowerCase();
 
         if (message.includes('fetch') || message.includes('network')) {
-            return { type: 'network', title: 'Network Connection Issue' };
+            return {type: 'network', title: 'Network Connection Issue'};
         } else if (message.includes('401') || message.includes('403')) {
-            return { type: 'auth', title: 'Authentication Error' };
+            return {type: 'auth', title: 'Authentication Error'};
         } else if (message.includes('429') || message.includes('quota')) {
-            return { type: 'quota', title: 'Service Limit Reached' };
+            return {type: 'quota', title: 'Service Limit Reached'};
         } else if (message.includes('timeout')) {
-            return { type: 'timeout', title: 'Request Timeout' };
+            return {type: 'timeout', title: 'Request Timeout'};
         } else {
-            return { type: 'unknown', title: 'Service Temporarily Unavailable' };
+            return {type: 'unknown', title: 'Service Temporarily Unavailable'};
         }
     }
 
@@ -483,28 +484,30 @@ Format your response with clear sections and actionable insights. Focus on being
         return messages[errorType.type] || messages.unknown;
     }
 
-    // 格式化分析内容
-    formatAnalysisContent(analysis) {
-        let formatted = analysis
-            .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
-            .replace(/\*(.*?)\*/g, '<em>$1</em>')
-            .replace(/#{1,6}\s*(.*?)$/gm, '<h4 style="color: var(--primary-cyan); margin: 20px 0 10px 0; font-family: var(--font-display);">$1</h4>')
-            .replace(/^- (.*?)$/gm, '<div class="ai-insight">• $1</div>')
-            .replace(/^(\d+\.)\s*(.*?)$/gm, '<div class="ai-insight"><strong>$1</strong> $2</div>');
+   formatAnalysisContent(analysis) {
+    let formatted = analysis
+        .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
+        .replace(/\*(.*?)\*/g, '<em>$1</em>')
+        .replace(/#{1,6}\s*(.*?)$/gm, '<h4>$1</h4>')
+        .replace(/^- (.*?)$/gm, '<li>$1</li>')
+        .replace(/^(\d+\.)\s*(.*?)$/gm, '<li><strong>$1</strong> $2</li>')
+        .replace(/\n/g, '<br>');
 
-        // 添加特殊样式标记
-        formatted = formatted
-            .replace(/🔍\s*\*\*ASSESSMENT OVERVIEW\*\*/g, '<div class="ai-insight"><strong>🔍 ASSESSMENT OVERVIEW</strong></div>')
-            .replace(/⚠️\s*\*\*HEALTH INSIGHTS\*\*/g, '<div class="ai-insight warning"><strong>⚠️ HEALTH INSIGHTS</strong></div>')
-            .replace(/💡\s*\*\*.*?RECOMMENDATIONS\*\*/g, '<div class="ai-insight"><strong>💡 PERSONALIZED RECOMMENDATIONS</strong></div>')
-            .replace(/📊\s*\*\*TECHNICAL ANALYSIS\*\*/g, '<div class="ai-insight"><strong>📊 TECHNICAL ANALYSIS</strong></div>')
-            .replace(/🎯\s*\*\*ACTION ITEMS\*\*/g, '<div class="ai-insight alert"><strong>🎯 ACTION ITEMS</strong></div>');
+    // 包装列表项
+    formatted = formatted
+        .replace(/(<li>.*?(?:<\/li>\s*)+)/gs, '<ul>$1</ul>')
+        .replace(/(<li><strong>\d+\..*?(?:<\/li>\s*)+)/gs, '<ol>$1</ol>');
 
-        // 处理换行
-        formatted = formatted.replace(/\n/g, '<br>');
+    // 添加特殊标记样式
+    formatted = formatted
+        .replace(/🔍\s*<strong>ASSESSMENT OVERVIEW<\/strong>/g, '<h4>🔍 ASSESSMENT OVERVIEW</h4>')
+        .replace(/⚠️\s*<strong>HEALTH INSIGHTS<\/strong>/g, '<h4 class="warning">⚠️ HEALTH INSIGHTS</h4>')
+        .replace(/💡\s*<strong>PERSONALIZED RECOMMENDATIONS<\/strong>/g, '<h4>💡 PERSONALIZED RECOMMENDATIONS</h4>')
+        .replace(/📊\s*<strong>TECHNICAL ANALYSIS<\/strong>/g, '<h4>📊 TECHNICAL ANALYSIS</h4>')
+        .replace(/🎯\s*<strong>ACTION ITEMS<\/strong>/g, '<h4 class="alert">🎯 ACTION ITEMS</h4>');
 
-        return formatted;
-    }
+    return formatted;
+}
 
     // 保存分析到历史记录
     saveAnalysisToHistory(analysis, measurementCount) {
@@ -632,36 +635,36 @@ Format your response with clear sections and actionable insights. Focus on being
 
     // 导出分析结果
     exportAnalysis(format = 'txt') {
-        if (!this.currentAnalysis) {
-            this.showMessage('No analysis available to export', 'warning');
-            return;
-        }
-
-        const timestamp = new Date().toISOString().slice(0, 19).replace(/[T:]/g, '-');
-        const filename = `rayvita-health-analysis-${timestamp}.${format}`;
-
-        let content = '';
-        let mimeType = 'text/plain';
-
-        switch (format) {
-            case 'txt':
-                content = this.generateTextReport();
-                break;
-            case 'json':
-                content = this.generateJSONReport();
-                mimeType = 'application/json';
-                break;
-            case 'pdf':
-                content = this.generateHTMLReport();
-                mimeType = 'text/html';
-                break;
-            default:
-                content = this.generateTextReport();
-        }
-
-        this.downloadFile(content, filename, mimeType);
-        this.showMessage(`Analysis exported as ${filename}`, 'success');
+    if (!this.currentAnalysis) {
+        this.showMessage('No analysis available to export', 'warning');
+        return;
     }
+
+    const timestamp = new Date().toISOString().slice(0, 19).replace(/[T:]/g, '-');
+    let filename = `rayvita-health-analysis-${timestamp}.${format}`;
+    let content = '';
+    let mimeType = 'text/plain';
+
+    switch (format) {
+        case 'txt':
+            content = this.generateTextReport();
+            break;
+        case 'json':
+            content = this.generateJSONReport();
+            mimeType = 'application/json';
+            break;
+        case 'pdf':
+            content = this.generateHTMLReport();
+            mimeType = 'text/html';
+            filename = `rayvita-health-analysis-${timestamp}.html`; // 改为 .html
+            break;
+        default:
+            content = this.generateTextReport();
+    }
+
+    this.downloadFile(content, filename, mimeType);
+    this.showMessage(`Analysis exported as ${filename}`, 'success');
+}
 
     // 生成文本报告
     generateTextReport() {
@@ -706,21 +709,108 @@ Report generated by RayVita-Synapse Neural Health Analytics Platform
         }, null, 2);
     }
 
-    // 生成HTML报告
     generateHTMLReport() {
-        return `<!DOCTYPE html>
+    const formattedContent = this.formatAnalysisContent(this.currentAnalysis.content);
+    return `<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>RayVita Health Analysis Report</title>
     <style>
-        body { font-family: Arial, sans-serif; line-height: 1.6; color: #333; max-width: 800px; margin: 0 auto; padding: 20px; }
-        .header { text-align: center; border-bottom: 2px solid #00ffff; padding-bottom: 20px; margin-bottom: 30px; }
-        .title { color: #00ffff; font-size: 24px; margin-bottom: 10px; }
-        .meta { color: #666; font-size: 14px; }
-        .content { margin: 20px 0; }
-        .footer { text-align: center; margin-top: 40px; padding-top: 20px; border-top: 1px solid #ccc; color: #666; font-size: 12px; }
+        body {
+            font-family: 'Helvetica Neue', Arial, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            max-width: 900px;
+            margin: 40px auto;
+            padding: 20px;
+            background: #f9f9f9;
+        }
+        .header {
+            text-align: center;
+            border-bottom: 3px solid #00ffff;
+            padding-bottom: 20px;
+            margin-bottom: 40px;
+        }
+        .title {
+            color: #00ffff;
+            font-size: 28px;
+            font-weight: bold;
+            margin-bottom: 15px;
+        }
+        .meta {
+            color: #666;
+            font-size: 16px;
+            line-height: 1.4;
+        }
+        .content {
+            margin: 20px 0;
+        }
+        h4 {
+            color: #00ffff;
+            font-size: 22px;
+            margin: 30px 0 15px;
+            font-weight: 600;
+        }
+        .ai-insight {
+            margin: 10px 0;
+            padding-left: 20px;
+            font-size: 16px;
+        }
+        .ai-insight.warning {
+            border-left: 4px solid #ff5555;
+            padding: 10px 15px;
+            background: rgba(255, 85, 85, 0.05);
+        }
+        .ai-insight.alert {
+            border-left: 4px solid #ffd700;
+            padding: 10px 15px;
+            background: rgba(255, 215, 0, 0.05);
+        }
+        strong {
+            color: #333;
+            font-weight: 600;
+        }
+        em {
+            font-style: italic;
+            color: #555;
+        }
+        ul, ol {
+            margin: 10px 0 10px 30px;
+            padding: 0;
+        }
+        li {
+            margin-bottom: 8px;
+        }
+        hr {
+            border: 0;
+            border-top: 1px solid #ddd;
+            margin: 20px 0;
+        }
+        .footer {
+            text-align: center;
+            margin-top: 50px;
+            padding-top: 20px;
+            border-top: 1px solid #ccc;
+            color: #666;
+            font-size: 14px;
+        }
+        @media print {
+            body {
+                background: #fff;
+                margin: 20px;
+            }
+            .header {
+                border-bottom-color: #000;
+            }
+            .title {
+                color: #000;
+            }
+            h4 {
+                color: #000;
+            }
+        }
     </style>
 </head>
 <body>
@@ -733,7 +823,7 @@ Report generated by RayVita-Synapse Neural Health Analytics Platform
         </div>
     </div>
     <div class="content">
-        ${this.currentAnalysis.content}
+        ${formattedContent.replace(/---/g, '<hr>')}
     </div>
     <div class="footer">
         Report generated by RayVita-Synapse Neural Health Analytics Platform<br>
@@ -745,7 +835,7 @@ Report generated by RayVita-Synapse Neural Health Analytics Platform
 
     // 下载文件
     downloadFile(content, filename, mimeType) {
-        const blob = new Blob([content], { type: mimeType });
+        const blob = new Blob([content], {type: mimeType});
         const url = URL.createObjectURL(blob);
         const a = document.createElement('a');
         a.href = url;

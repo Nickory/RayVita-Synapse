@@ -718,7 +718,7 @@
 .neural-card:hover,
 .metric-item:hover,
 .post-item:hover {
-    /*will-change: auto;*/
+    will-change: auto;
 }
 
 /* GPU Acceleration for Smooth Animations */

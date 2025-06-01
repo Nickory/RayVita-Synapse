@@ -126,7 +126,7 @@ window.RayVitaConfig = {
 
     // Map Configuration
     MAP: {
-        DEFAULT_CENTER: [39.9042, 116.4074], // Beijing coordinates
+        DEFAULT_CENTER: [32.204229, 118.713777], // Beijing coordinates
         DEFAULT_ZOOM: 13,
         TILE_LAYER: 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
         ATTRIBUTION: ' OpenStreetMap contributors'
